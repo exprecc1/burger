@@ -1,0 +1,30 @@
+.modal__content__order {
+  margin: 120px 100px 40px 100px;
+}
+
+.id__text {
+  margin-top: 30px;
+  margin-bottom: 60px;
+
+  h3 {
+    font-family: 'Jet Brains Mono';
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 30px;
+  }
+}
+
+.order__text {
+  font-family: 'Jet Brains Mono';
+  margin-top: 60px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #f2f2f3;
+}
+
+.order__ready__text {
+  composes: order__text;
+  margin-top: -12px;
+  color: #8585ad;
+}

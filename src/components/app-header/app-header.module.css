@@ -1,0 +1,91 @@
+.header {
+  width: 100%;
+  height: 88px;
+  background-color: #1c1c21;
+  position: relative;
+
+  a {
+    text-decoration: none;
+    color: #8585ad;
+  }
+}
+
+.container {
+  width: 1280px;
+  margin: 0 auto;
+  position: absolute;
+  top: 25%;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.toggle {
+  width: 383px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.builder {
+  text-align: center;
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    text-align: center;
+
+    span {
+      font-family: 'Jet Brains Mono';
+      margin-left: 8px;
+      font-weight: 400;
+      color: #f2f2f3;
+      margin-right: 10px;
+    }
+  }
+}
+
+.tape {
+  composes: builder;
+  a {
+    span {
+      color: #8585ad;
+    }
+  }
+}
+
+.header_logo {
+  margin-right: 185px;
+}
+
+.user {
+  composes: tape;
+  display: flex;
+  align-items: center;
+}
+
+.builder:hover {
+  span,
+  svg {
+    color: #f2f2f3;
+    fill: #f2f2f3;
+  }
+}
+.tape:hover {
+  span,
+  svg {
+    color: #f2f2f3;
+    fill: #f2f2f3;
+  }
+}
+.user:hover {
+  span,
+  svg {
+    color: #f2f2f3;
+    fill: #f2f2f3;
+  }
+}

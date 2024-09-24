@@ -1,0 +1,53 @@
+.modal__content__ingredients {
+  margin: 40px 40px 0 40px;
+  position: relative;
+}
+
+.title__ingredients {
+  text-align: left;
+  padding-top: 0px;
+  h2 {
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 40px;
+  }
+}
+
+.image__ingredients {
+  margin-top: -25px;
+  width: 520px;
+  height: 240px;
+}
+
+.name__ingredients {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+  margin-top: 16px;
+  color: #f2f2f3;
+}
+
+.structure__ingrediens {
+  margin: 0 auto;
+  width: 516px;
+  height: 56px;
+  display: flex;
+  justify-content: space-between;
+
+  p {
+    font-family: 'Jet Brains Mono';
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #8585ad;
+  }
+}
+
+.structure__ingrediens__box {
+  height: 54px;
+  width: 112px;
+}
+
+.quantity {
+  margin-top: -10px;
+}

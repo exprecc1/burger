@@ -40,3 +40,29 @@
 .read-the-docs {
   color: #888;
 }
+
+/*--------------------------------------------------------------------------------*/
+
+.container {
+  width: 1280px;
+
+  margin: 0 auto;
+}
+
+.title {
+  margin-top: 40px;
+  max-width: 400px;
+  height: 40px;
+
+  h2 {
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 40px;
+    color: #f2f2f3;
+  }
+}
+
+.burger__page {
+  display: flex;
+  justify-content: space-around;
+}
