@@ -5,49 +5,51 @@ import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ModalOverlay } from './modal-overlay/modal-overlay';
 import style from './modal.module.css';
 
-export const Modal = (props) => {
+export const Modal = ({ children, onClose, isVisible }) => {
   const handleClick = (event) => {
     if (event.target.className == '_modal__overlay__active_15okl_19') {
-      props.onClose();
+      onClose();
     }
   };
 
   const handleKeyDown = (event) => {
     if (event.key === 'Escape') {
-      props.onClose();
+      onClose();
     }
   };
 
   //По нажатию клавиши
   React.useEffect(() => {
-    props.isVisible
+    isVisible
       ? document.addEventListener('keydown', handleKeyDown)
       : document.removeEventListener('keydown', handleKeyDown);
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [props.isVisible]);
+  }, [isVisible]);
 
   //По клику
   React.useEffect(() => {
-    props.isVisible
+    isVisible
       ? document.addEventListener('mousedown', handleClick)
       : document.removeEventListener('mousedown', handleClick);
-  }, [props.isVisible]);
+  }, [isVisible]);
+
+  if (!isVisible) return null;
 
   return (
     <>
       {createPortal(
         <div id={style.modal}>
           <div className="modal__header">
-            <CloseIcon onClick={() => props.onClose()} type="primary" className={style.close} />
+            <CloseIcon onClick={() => onClose()} type="primary" className={style.close} />
           </div>
-          {props.children}
+          {children}
         </div>,
         document.body,
       )}
-      <ModalOverlay isVisible={props.isVisible} />
+      <ModalOverlay isVisible={isVisible} />
     </>
   );
 };

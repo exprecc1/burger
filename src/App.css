@@ -66,3 +66,7 @@
   display: flex;
   justify-content: space-around;
 }
+
+.error-message {
+  text-align: center;
+}

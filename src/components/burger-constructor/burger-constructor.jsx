@@ -7,9 +7,17 @@ import {
   CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { IngredientType } from '../../utils/types';
+import { OrderDetails } from './burger-constructor-modal/burger-constructor-modal';
+import { Modal } from '../modal/modal';
+import { useModal } from '../../hooks/useModal';
 import style from './burger-constructor.module.css';
-export const BurgerConstructor = ({ onOpen, item }) => {
-  const bun = item.filter((obj) => obj.type.includes('bun'));
+
+export const BurgerConstructor = ({ ingredients }) => {
+  const { isModal, openModal, closeModal } = useModal();
+
+  const bun = ingredients.filter((obj) => obj.type.includes('bun'));
+  const nonBunIngredients = ingredients.filter((obj) => obj.type !== 'bun');
+
   return (
     <div className="builder">
       <div className={style.builder__content}>
@@ -23,7 +31,7 @@ export const BurgerConstructor = ({ onOpen, item }) => {
           />
         </div>
         <div className={style.builder__ingredients}>
-          {item.map((item) => {
+          {nonBunIngredients.map((item) => {
             return (
               <div className={style.builder__box} key={item._id}>
                 <DragIcon type="primary" className="pl-0 pr-2 pb-0 pt-0" />
@@ -55,15 +63,17 @@ export const BurgerConstructor = ({ onOpen, item }) => {
             <CurrencyIcon type="primary" />
           </p>
         </div>
-        <Button onClick={() => onOpen()} htmlType="button" type="primary" size="medium">
+        <Button onClick={() => openModal()} htmlType="button" type="primary" size="medium">
           Оформить заказ
         </Button>
       </div>
+      <Modal isVisible={isModal} onClose={closeModal}>
+        <OrderDetails />
+      </Modal>
     </div>
   );
 };
 
 BurgerConstructor.propTypes = {
-  onOpen: PropTypes.func.isRequired,
-  item: PropTypes.arrayOf(IngredientType.isRequired).isRequired,
+  ingredients: PropTypes.arrayOf(IngredientType.isRequired).isRequired,
 };

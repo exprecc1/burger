@@ -1,8 +1,12 @@
 /* @import url('@ya.praktikum/react-developer-burger-ui-components'); */
 
-.burger_components {
+.burger__components {
   margin-top: 20px;
   max-width: 600px;
+}
+
+.burger__components__toggle {
+  display: flex;
 }
 
 .toggle_ingredients {
@@ -42,49 +46,4 @@
   overflow-x: hidden;
   scrollbar-color: #6969dd, #e0e0e0;
   scrollbar-width: thin;
-}
-
-.title__ingredients {
-  margin-top: 40px;
-  display: flex;
-  h3 {
-    font-weight: 700;
-    font-size: 24px;
-    line-height: 30px;
-    color: #fff;
-  }
-}
-
-.ingredients__box {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  align-content: center;
-  flex-wrap: wrap;
-}
-
-.ingredients {
-  margin-top: 24px;
-  width: 272px;
-  height: 208px;
-  text-align: center;
-  position: relative;
-  cursor: pointer;
-
-  p {
-    font-family: 'Jet Brains Mono';
-    text-align: center;
-    justify-content: center;
-    display: flex;
-    color: #fff;
-  }
-
-  svg {
-    margin-left: 8px;
-  }
-
-  .ingredients__footer {
-    margin-top: 3px;
-    width: 100%;
-  }
 }
