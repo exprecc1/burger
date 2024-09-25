@@ -1,0 +1,49 @@
+/* @import url('@ya.praktikum/react-developer-burger-ui-components'); */
+
+.burger__components {
+  margin-top: 20px;
+  max-width: 600px;
+}
+
+.burger__components__toggle {
+  display: flex;
+}
+
+.toggle_ingredients {
+  display: flex;
+  align-items: center;
+}
+
+.toggle {
+  width: 200px;
+  height: 56px;
+  padding-top: 20px;
+  text-align: center;
+  cursor: pointer;
+  span {
+    font-weight: 400;
+    font-size: 16px;
+    color: #8585ad;
+  }
+}
+.toggle__active {
+  composes: toggle;
+  border-bottom: 1px solid #4c4cff;
+
+  span {
+    font-weight: 400;
+    font-size: 16px;
+    color: #fff;
+  }
+}
+
+/*ingredients*/
+
+.burger__ingredients {
+  margin-top: 40px;
+  height: 600px;
+  overflow: scroll;
+  overflow-x: hidden;
+  scrollbar-color: #6969dd, #e0e0e0;
+  scrollbar-width: thin;
+}

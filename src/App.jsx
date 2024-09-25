@@ -1,37 +1,59 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+import React from 'react';
+import { AppHeader } from './components/app-header/app-header';
+import { BurgerIngredients } from './components/burger-ingredients/burger-ingredients';
+import { BurgerConstructor } from './components/burger-constructor/burger-constructor';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [ingredients, setIngredients] = React.useState([]);
+  const [error, setError] = React.useState(null);
+
+  //Получение данных с api
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://norma.nomoreparties.space/api/ingredients');
+
+        if (!response.ok) {
+          throw new Error('Ошибка сети ', response.status);
+        }
+
+        const data = await response.json();
+        setIngredients(data.data);
+        setError(null);
+      } catch (error) {
+        console.error('Ошибка получения данных:', error);
+        setError(error.message);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <>
-      <Tab active={true} value={1} onClick={() => {}} />
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      {error ? (
+        <div className="message-error">{error}</div>
+      ) : (
+        ingredients && (
+          <>
+            <AppHeader />
+            <div className="container">
+              <div>
+                <div className="title">
+                  <h2>Соберите бургер</h2>
+                </div>
+                <section className="burger__page">
+                  <BurgerIngredients ingredients={ingredients} />
+                  <BurgerConstructor ingredients={ingredients} />
+                </section>
+              </div>
+            </div>
+          </>
+        )
+      )}
     </>
-  )
+  );
 }
 
-export default App
+export default App;

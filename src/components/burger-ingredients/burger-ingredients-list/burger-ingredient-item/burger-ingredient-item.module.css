@@ -1,0 +1,25 @@
+.ingredients {
+  margin-top: 24px;
+  width: 272px;
+  height: 208px;
+  text-align: center;
+  position: relative;
+  cursor: pointer;
+
+  p {
+    font-family: 'Jet Brains Mono';
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    color: #fff;
+  }
+
+  svg {
+    margin-left: 8px;
+  }
+
+  .ingredients__footer {
+    margin-top: 3px;
+    width: 100%;
+  }
+}

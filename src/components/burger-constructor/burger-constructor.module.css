@@ -1,0 +1,60 @@
+.builder__content {
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+
+  svg {
+    cursor: pointer;
+  }
+}
+::-webkit-scrollbar {
+  height: 200px;
+}
+.builder__ingredients {
+  margin-right: -10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: scroll;
+  overflow-x: hidden;
+  scrollbar-color: #6969dd, #e0e0e0;
+  scrollbar-width: thin;
+}
+
+.builder__box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  flex-wrap: wrap;
+}
+
+.builder__footer {
+  margin: 40px 8px 8px 52px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.final__price {
+  margin-right: 40px;
+  p {
+    font-family: 'Jet Brains Mono';
+    width: 119px;
+    justify-content: center;
+    display: flex;
+    font-weight: 400;
+    font-size: 48px;
+    line-height: 36px;
+    color: #fff;
+
+    svg {
+      margin-left: 10px;
+      width: 36px;
+      height: 36px;
+    }
+  }
+}
