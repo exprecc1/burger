@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useDrag } from 'react-dnd';
+import { useSelector } from 'react-redux';
 import { IngredientType } from '../../../../utils/types';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './burger-ingredient-item.module.css';
@@ -14,6 +15,9 @@ export const BurgerIngredientsitem = ({ onClick, item }) => {
       isDragging: monitor.isDragging(),
     }),
   });
+  //Счетчик
+  const { ingredientCounts } = useSelector((state) => state.constructorList);
+  const count = ingredientCounts[item._id] || 0;
 
   return (
     <div
@@ -22,7 +26,7 @@ export const BurgerIngredientsitem = ({ onClick, item }) => {
       onClick={onClick}
       style={{ opacity: isDragging ? 0.5 : 1 }}
     >
-      <Counter count={1} size="default" extraClass="m-1" />
+      {count > 0 ? <Counter count={count} size="default" extraClass="m-1" /> : null}
       <img src={item.image} alt={item.name} />
       <p>
         {item.price} <CurrencyIcon />

@@ -23,20 +23,21 @@ export const BurgerConstructor = () => {
   const bun = ingredients.filter((obj) => obj.type.includes('bun'));
   const nonBunIngredients = ingredients.filter((obj) => obj.type !== 'bun');
 
-  const handleDrop = React.useCallback(
-    (item) => {
-      dispatch(addIngredient(item));
-    },
-    [dispatch],
-  );
+  const handleDrop = (item) => dispatch(addIngredient(item));
+  const handleRemoveIngredient = (id) => dispatch(removeIngredient({ _id: id }));
 
   React.useEffect(() => {
     console.log('Ingredients changed:', ingredients);
-    // Здесь вы можете добавить другие действия, которые должны произойти при изменении ингредиентов
   }, [ingredients]);
 
-  const handleRemoveIngredient = (id) => dispatch(removeIngredient(id));
+  // Подсчет общей стоимости с учетом двух булок
+  const totalPrice = React.useMemo(() => {
+    const bunPrice = bun.length ? bun[0].price * 2 : 0;
+    const nonBunPrice = nonBunIngredients.reduce((total, item) => total + item.price, 0);
+    return bunPrice + nonBunPrice;
+  }, [bun, nonBunIngredients]);
 
+  //Приемка ингредиентов
   const [{ isOver }, drop] = useDrop({
     accept: 'ingredient',
     drop: handleDrop,
@@ -74,7 +75,7 @@ export const BurgerConstructor = () => {
                   text={item.name}
                   price={item.price}
                   thumbnail={item.image}
-                  handleClose={() => handleRemoveIngredient(item.id)}
+                  handleClose={() => handleRemoveIngredient(item._id)}
                 />
               </div>
             );
@@ -95,7 +96,7 @@ export const BurgerConstructor = () => {
       <div className={style.builder__footer}>
         <div className={style.final__price}>
           <p>
-            {ingredients.reduce((total, item) => total + item.price, 0)}
+            {totalPrice}
             <CurrencyIcon type="primary" />
           </p>
         </div>
