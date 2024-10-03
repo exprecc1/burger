@@ -1,12 +1,23 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import style from './burger-constructor-modal.module.css';
-import orderNum from '../../../image/orderNumber.png';
 import done from '../../../image/done.png';
 
 export const OrderDetails = () => {
+  const { orderNumber, status, error } = useSelector((state) => state.order);
+  console.log(orderNumber, status, error);
+
+  if (status === 'loading') {
+    return <div className={style.loading}>Загрузка....</div>;
+  }
+
+  if (status === 'failed') {
+    return <div className={style.error}>Ошибка: {error}</div>;
+  }
+
   return (
     <div className={style.modal__content__order}>
-      <img src={orderNum} alt="order number" />
+      <span className={style.orderNum}>{orderNumber}</span>
       <div className={style.id__text}>
         <h3>идентификатор заказа</h3>
       </div>

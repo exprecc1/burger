@@ -15,9 +15,19 @@ export const BurgerIngredientsitem = ({ onClick, item }) => {
       isDragging: monitor.isDragging(),
     }),
   });
-  //Счетчик
-  const { ingredientCounts } = useSelector((state) => state.constructorList);
-  const count = ingredientCounts[item._id] || 0;
+  // Получаем список ингредиентов из Redux
+  const ingredients = useSelector((state) => state.constructorList.ingredients);
+
+  // Вычисляем количество текущего ингредиента
+  const count = React.useMemo(() => {
+    if (item.type === 'bun') {
+      // Если это булка, то количество всегда 2
+      return ingredients.some((ingredient) => ingredient._id === item._id) ? 2 : 0;
+    } else {
+      // Для других ингредиентов считаем количество
+      return ingredients.filter((ingredient) => ingredient._id === item._id).length;
+    }
+  }, [ingredients, item._id, item.type]);
 
   return (
     <div

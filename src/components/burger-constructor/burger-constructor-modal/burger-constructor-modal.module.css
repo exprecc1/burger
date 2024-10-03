@@ -2,6 +2,13 @@
   margin: 120px 100px 120px 100px;
 }
 
+.orderNum {
+  font-family: 'Iceland';
+  font-weight: normal;
+  font-size: 144px;
+  line-height: 0.83;
+}
+
 .id__text {
   margin-top: 30px;
   margin-bottom: 60px;
@@ -27,4 +34,12 @@
   composes: order__text;
   margin-top: -12px;
   color: #8585ad;
+}
+
+.loading,
+.error {
+  position: absolute;
+  left: 22%;
+  top: 50%;
+  font-size: 24px;
 }

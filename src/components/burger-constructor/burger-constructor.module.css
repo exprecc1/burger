@@ -56,3 +56,53 @@
     }
   }
 }
+
+.empty {
+  padding: 16px 24px;
+  display: inline-block;
+  border-radius: var(--common-border-radius-s);
+  background: var(--background-element);
+  width: 536px;
+  min-height: 80px;
+  font-family: 'Jet Brains Mono';
+  font-size: 16px;
+  line-height: 24px;
+  color: #f2f2f3;
+  flex-grow: 1;
+  box-sizing: border-box;
+}
+
+.empty__top {
+  composes: empty;
+  border-radius: var(--top-constructor-item-border-radius);
+}
+
+.empty__text {
+  margin-top: 10px;
+  margin-right: 20px;
+  display: inline-flex;
+  align-items: center;
+  line-height: 24px;
+  text-align: left;
+  flex-grow: 1;
+}
+
+.empty__bottom {
+  composes: empty__top;
+  border-radius: var(--bottom-constructor-item-border-radius);
+}
+
+.empty__drop {
+  border: 2px dashed #4c4cff;
+  border-radius: var(--common-border-radius-s);
+}
+
+.empty__top__drop {
+  border: 2px dashed #4c4cff;
+  border-radius: var(--top-constructor-item-border-radius);
+}
+
+.empty__bottom__drop {
+  border: 2px dashed #4c4cff;
+  border-radius: var(--bottom-constructor-item-border-radius);
+}

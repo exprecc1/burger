@@ -1,8 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import { IngredientType } from '../../utils/types';
 import { BurgerIngredientsList } from './burger-ingredients-list/burger-ingredients-list';
 import { IngredientDetails } from './burger-ingredients-modal/ingredients-detail';
 import { Modal } from '../modal/modal';
@@ -34,6 +32,51 @@ export const BurgerIngredients = () => {
     ];
   }, [items]);
 
+  // Ссылки на элементы категорий
+  const bunRef = React.useRef(null);
+  const sauceRef = React.useRef(null);
+  const stuffRef = React.useRef(null);
+
+  // Обработка скролла
+  const handleScroll = () => {
+    const bunTop = bunRef.current.getBoundingClientRect().top;
+    const sauceTop = sauceRef.current.getBoundingClientRect().top;
+    const stuffTop = stuffRef.current.getBoundingClientRect().top;
+
+    if (bunTop >= 50) {
+      setCurrent('one');
+    } else if (sauceTop > -65) {
+      setCurrent('two');
+    } else if (stuffTop > -350) {
+      setCurrent('three');
+    }
+  };
+
+  React.useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  // Клик на Tab
+  const handleTabClick = (tab) => {
+    setCurrent(tab);
+    switch (tab) {
+      case 'one':
+        bunRef.current.scrollIntoView({ behavior: 'smooth' });
+        break;
+      case 'two':
+        sauceRef.current.scrollIntoView({ behavior: 'smooth' });
+        break;
+      case 'three':
+        stuffRef.current.scrollIntoView({ behavior: 'smooth' });
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <>
       {error ? (
@@ -44,20 +87,30 @@ export const BurgerIngredients = () => {
         items && (
           <div className={style.burger__components}>
             <div className={style.burger__components__toggle}>
-              <Tab value="one" active={current === 'one'} onClick={setCurrent}>
+              <Tab value="one" active={current === 'one'} onClick={() => handleTabClick('one')}>
                 Булки
               </Tab>
-              <Tab value="two" active={current === 'two'} onClick={setCurrent}>
+              <Tab value="two" active={current === 'two'} onClick={() => handleTabClick('two')}>
                 Соусы
               </Tab>
-              <Tab value="three" active={current === 'three'} onClick={setCurrent}>
+              <Tab
+                value="three"
+                active={current === 'three'}
+                onClick={() => handleTabClick('three')}
+              >
                 Начинки
               </Tab>
             </div>
-            <div className={style.burger__ingredients}>
-              <BurgerIngredientsList title="Булки" item={bun} choiceItem={openModal} />
-              <BurgerIngredientsList title="Соусы" item={sauce} choiceItem={openModal} />
-              <BurgerIngredientsList title="Начинки" item={stuff} choiceItem={openModal} />
+            <div className={style.burger__ingredients} onScroll={handleScroll}>
+              <div ref={bunRef}>
+                <BurgerIngredientsList title="Булки" item={bun} choiceItem={openModal} />
+              </div>
+              <div ref={sauceRef}>
+                <BurgerIngredientsList title="Соусы" item={sauce} choiceItem={openModal} />
+              </div>
+              <div ref={stuffRef}>
+                <BurgerIngredientsList title="Начинки" item={stuff} choiceItem={openModal} />
+              </div>
             </div>
             {currentIngredient && (
               <Modal isVisible={isModal} onClose={closeModal}>
@@ -69,8 +122,4 @@ export const BurgerIngredients = () => {
       )}
     </>
   );
-};
-
-BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(IngredientType.isRequired),
 };
