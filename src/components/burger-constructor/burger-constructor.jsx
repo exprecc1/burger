@@ -16,7 +16,7 @@ import {
 import { submitOrder } from '../../services/slices/order-details/slice';
 import { v4 as uuidv4 } from 'uuid';
 import style from './burger-constructor.module.css';
-import { DraggableIngredient } from './DraggableIngredient';
+import { DraggableIngredient } from './draggable-ingredient';
 
 export const BurgerConstructor = () => {
   const { isModal, openModal, closeModal } = useModal();

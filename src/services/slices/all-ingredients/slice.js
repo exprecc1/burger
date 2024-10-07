@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { request } from '../../../utils/request';
 
 const initialState = {
   items: [],
@@ -7,13 +8,7 @@ const initialState = {
 };
 
 export const fetchAllIngredients = createAsyncThunk('ingredients/fetchAllIngredients', async () => {
-  const response = await fetch('https://norma.nomoreparties.space/api/ingredients');
-
-  if (!response.ok) {
-    throw new Error('Ошибка сети ', response.status);
-  }
-
-  const data = await response.json();
+  const data = await request('/ingredients');
   return data.data;
 });
 
