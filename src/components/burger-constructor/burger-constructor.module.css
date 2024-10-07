@@ -93,6 +93,7 @@
 }
 
 .empty__drop {
+  composes: builder__ingredients;
   border: 2px dashed #4c4cff;
   border-radius: var(--common-border-radius-s);
 }

@@ -3,44 +3,48 @@ import { useDrop } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   ConstructorElement,
-  DragIcon,
   Button,
   CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { OrderDetails } from './burger-constructor-modal/burger-constructor-modal';
 import { Modal } from '../modal/modal';
 import { useModal } from '../../hooks/useModal';
-import { addIngredient, removeIngredient } from '../../services/slices/constructor-list/slice';
+import {
+  addIngredient,
+  updateIngredientsOrder,
+} from '../../services/slices/constructor-list/slice';
 import { submitOrder } from '../../services/slices/order-details/slice';
+import { v4 as uuidv4 } from 'uuid';
 import style from './burger-constructor.module.css';
+import { DraggableIngredient } from './DraggableIngredient';
 
 export const BurgerConstructor = () => {
   const { isModal, openModal, closeModal } = useModal();
   const dispatch = useDispatch();
   const ingredients = useSelector((state) => state.constructorList.ingredients);
 
-  const bun = ingredients.filter((obj) => obj.type.includes('bun'));
-  const nonBunIngredients = ingredients.filter((obj) => obj.type !== 'bun');
+  const bun = ingredients.filter((obj) => obj.type && obj.type.includes('bun'));
+  const nonBunIngredients = ingredients.filter((obj) => obj.type && obj.type !== 'bun');
 
-  const handleDrop = (item) => dispatch(addIngredient(item));
-  const handleRemoveIngredient = (id) => dispatch(removeIngredient({ _id: id }));
+  const handleDrop = (item) => {
+    const newItem = { ...item, uuid: uuidv4() };
+    dispatch(addIngredient(newItem));
+  };
 
   React.useEffect(() => {
     console.log('Ingredients changed:', ingredients);
   }, [ingredients]);
 
-  // Подсчет общей стоимости с учетом двух булок
   const totalPrice = React.useMemo(() => {
-    const bunPrice = bun.length ? bun[0].price * 2 : 0;
     const nonBunPrice = nonBunIngredients.reduce((total, item) => total + item.price, 0);
-    return bunPrice + nonBunPrice;
+    return (bun.length ? bun[0].price * 2 : 0) + nonBunPrice;
   }, [bun, nonBunIngredients]);
 
-  // Приемка ингредиентов для булок
   const [{ isOver: isOverBunTop }, dropBunTop] = useDrop({
-    accept: 'ingredient',
+    accept: 'bun',
     drop: (item) => {
-      if (item.type === 'bun') {
+      if (item.type === 'bun' && !item.isInConstructor) {
+        // Проверка, что ингредиент не в конструкторе
         handleDrop(item);
       }
     },
@@ -50,9 +54,10 @@ export const BurgerConstructor = () => {
   });
 
   const [{ isOver: isOverBunBottom }, dropBunBottom] = useDrop({
-    accept: 'ingredient',
+    accept: 'bun',
     drop: (item) => {
-      if (item.type === 'bun') {
+      if (item.type === 'bun' && !item.isInConstructor) {
+        // Проверка, что ингредиент не в конструкторе
         handleDrop(item);
       }
     },
@@ -61,11 +66,11 @@ export const BurgerConstructor = () => {
     }),
   });
 
-  // Приемка ингредиентов для начинки
   const [{ isOver: isOverIngredients }, dropIngredients] = useDrop({
     accept: 'ingredient',
     drop: (item) => {
-      if (item.type !== 'bun') {
+      if (item.type !== 'bun' && !item.isInConstructor) {
+        // Проверка, что ингредиент не в конструкторе
         handleDrop(item);
       }
     },
@@ -74,12 +79,21 @@ export const BurgerConstructor = () => {
     }),
   });
 
-  //Отправка заказа
   const handleOrderSubmit = () => {
     const ingredientIds = ingredients.map((ingredient) => ingredient._id);
     dispatch(submitOrder(ingredientIds));
     openModal();
   };
+
+  const moveIngredient = React.useCallback(
+    (dragIndex, hoverIndex) => {
+      const updatedIngredients = [...nonBunIngredients];
+      const [draggedIngredient] = updatedIngredients.splice(dragIndex, 1);
+      updatedIngredients.splice(hoverIndex, 0, draggedIngredient);
+      dispatch(updateIngredientsOrder([...bun, ...updatedIngredients]));
+    },
+    [bun, nonBunIngredients, dispatch],
+  );
 
   return (
     <div className="builder">
@@ -89,9 +103,9 @@ export const BurgerConstructor = () => {
           ref={dropBunTop}
         >
           {bun.length > 0 ? (
-            bun.map((item, idx) => (
+            bun.map((item) => (
               <ConstructorElement
-                key={idx}
+                key={item.uuid}
                 type="top"
                 isLocked={true}
                 text={`${item.name} (верх)`}
@@ -110,21 +124,14 @@ export const BurgerConstructor = () => {
           ref={dropIngredients}
         >
           {nonBunIngredients.length > 0 ? (
-            nonBunIngredients.map((item, idx) => {
-              return (
-                <div className={style.builder__box} key={idx}>
-                  <DragIcon type="primary" className="pl-0 pr-2 pb-0 pt-0" />
-                  <ConstructorElement
-                    type="undefined"
-                    isLocked={false}
-                    text={item.name}
-                    price={item.price}
-                    thumbnail={item.image}
-                    handleClose={() => handleRemoveIngredient(item._id)}
-                  />
-                </div>
-              );
-            })
+            nonBunIngredients.map((item, index) => (
+              <DraggableIngredient
+                key={item.uuid}
+                item={item}
+                index={index}
+                moveIngredient={moveIngredient}
+              />
+            ))
           ) : (
             <div className={style.empty}>
               <div className={style.empty__text}>Добавьте ингредиенты</div>
@@ -136,9 +143,9 @@ export const BurgerConstructor = () => {
           ref={dropBunBottom}
         >
           {bun.length > 0 ? (
-            bun.map((item, idx) => (
+            bun.map((item) => (
               <ConstructorElement
-                key={idx}
+                key={item.uuid}
                 type="bottom"
                 isLocked={true}
                 text={`${item.name} (низ)`}

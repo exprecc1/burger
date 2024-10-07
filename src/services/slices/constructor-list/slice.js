@@ -10,20 +10,20 @@ const constructorListSlice = createSlice({
   initialState,
   reducers: {
     addIngredient: (state, action) => {
-      const { type } = action.payload;
+      const { type, uuid } = action.payload;
       if (type === 'bun') {
         // Удаляем старую булку, если она есть
         state.ingredients = state.ingredients.filter((item) => item.type !== 'bun');
-        // Добавляем новую булку
-        state.ingredients.push(action.payload);
+        // Добавляем новую булку в начало списка
+        state.ingredients.unshift({ ...action.payload, uuid });
       } else {
         // Добавляем ингредиент в список
-        state.ingredients.push(action.payload);
+        state.ingredients.push({ ...action.payload, uuid });
       }
     },
     removeIngredient: (state, action) => {
-      const { _id } = action.payload;
-      const index = state.ingredients.findIndex((ingredient) => ingredient._id === _id);
+      const { uuid } = action.payload;
+      const index = state.ingredients.findIndex((ingredient) => ingredient.uuid === uuid);
       if (index !== -1) {
         state.ingredients.splice(index, 1);
       }
@@ -31,8 +31,12 @@ const constructorListSlice = createSlice({
     clearIngredients: (state) => {
       state.ingredients = [];
     },
+    updateIngredientsOrder: (state, action) => {
+      state.ingredients = action.payload;
+    },
   },
 });
 
-export const { addIngredient, removeIngredient, clearIngredients } = constructorListSlice.actions;
+export const { addIngredient, removeIngredient, clearIngredients, updateIngredientsOrder } =
+  constructorListSlice.actions;
 export default constructorListSlice.reducer;

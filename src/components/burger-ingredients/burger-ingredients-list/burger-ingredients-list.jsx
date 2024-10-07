@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { IngredientType } from '../../../utils/types';
-import { BurgerIngredientsitem } from './burger-ingredient-item/burger-ingredient-item';
+import { BurgerIngredientsItem } from './burger-ingredient-item/burger-ingredient-item';
 import style from './burger-ingredients-list.module.css';
 
 export const BurgerIngredientsList = ({ title, item, choiceItem }) => {
@@ -12,7 +12,7 @@ export const BurgerIngredientsList = ({ title, item, choiceItem }) => {
       </div>
       <div className={style.ingredients__box}>
         {item.map((item, idx) => (
-          <BurgerIngredientsitem key={idx} item={item} onClick={() => choiceItem(item)} />
+          <BurgerIngredientsItem key={idx} item={item} onClick={() => choiceItem(item)} />
         ))}
       </div>
     </>

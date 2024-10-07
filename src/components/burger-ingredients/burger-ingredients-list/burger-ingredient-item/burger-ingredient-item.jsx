@@ -6,15 +6,19 @@ import { IngredientType } from '../../../../utils/types';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './burger-ingredient-item.module.css';
 
-export const BurgerIngredientsitem = ({ onClick, item }) => {
+export const BurgerIngredientsItem = ({ onClick, item }) => {
+  // Определяем тип перетаскивания в зависимости от типа ингредиента
+  const dragType = item.type === 'bun' ? 'bun' : 'ingredient';
+
   // Перетаскивание текущего item
   const [{ isDragging }, drag] = useDrag({
-    type: 'ingredient',
-    item: { id: item._id, ...item }, // Передаем весь объект ингредиента
+    type: dragType, // Используем dragType
+    item: { id: item._id, ...item },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
   });
+
   // Получаем список ингредиентов из Redux
   const ingredients = useSelector((state) => state.constructorList.ingredients);
 
@@ -48,7 +52,7 @@ export const BurgerIngredientsitem = ({ onClick, item }) => {
   );
 };
 
-BurgerIngredientsitem.propTypes = {
+BurgerIngredientsItem.propTypes = {
   onClick: PropTypes.func.isRequired,
   item: IngredientType.isRequired,
 };
