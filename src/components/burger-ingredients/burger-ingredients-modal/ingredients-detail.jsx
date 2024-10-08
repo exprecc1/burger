@@ -1,4 +1,3 @@
-import propTypes from 'prop-types';
 import { IngredientType } from '../../../utils/types';
 import style from '../burger-ingredients-modal/ingredients-detail.module.css';
 
