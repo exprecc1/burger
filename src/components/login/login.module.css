@@ -1,0 +1,15 @@
+.container_box {
+  margin: 0 auto;
+  margin-top: 180px;
+  width: 480px;
+  height: 430px;
+  font-family: 'Jet Brains Mono';
+  font-weight: 400;
+}
+
+.input__container {
+  display: inline-block;
+  margin-bottom: 24px;
+  width: fit-content;
+  text-align: left;
+}
