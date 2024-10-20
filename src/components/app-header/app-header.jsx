@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   BurgerIcon,
   ListIcon,
@@ -13,10 +14,10 @@ export const AppHeader = () => {
         <section className={style.head}>
           <div className={style.toggle}>
             <div className={style.builder}>
-              <a href="#">
+              <Link to="/">
                 <BurgerIcon type="primary" />
                 <span>Конструктор</span>
-              </a>
+              </Link>
             </div>
             <div className={style.tape}>
               <a href="#">
