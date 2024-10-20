@@ -1,9 +1,9 @@
 import React from 'react';
-import style from './login.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
+import style from './register.module.css';
 
-export const LoginPage = () => {
+export const RegisterPage = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [showPassword, setShowPassword] = React.useState(false);
@@ -17,7 +17,21 @@ export const LoginPage = () => {
 
   return (
     <div className={style.container_box}>
-      <h3>Вход</h3>
+      <h3>Регистрация</h3>
+      <div className={style.input__container}>
+        <Input
+          type={'email'}
+          placeholder={'Имя'}
+          onChange={(e) => setEmail(e.target.value)}
+          value={email}
+          name={'name'}
+          error={false}
+          ref={emailRef}
+          errorText={'Ошибка'}
+          size={'default'}
+          extraClass="ml-1"
+        />
+      </div>
       <div className={style.input__container}>
         <Input
           type={'email'}
@@ -49,16 +63,12 @@ export const LoginPage = () => {
         />
       </div>
       <Button htmlType="button" type="primary" size="medium">
-        Войти
+        Зарегистрироваться
       </Button>
       <div className={style.conteiner__footer}>
         <p>
-          Вы — новый пользователь?
-          <Link to="/forgot-password"> Восстановить пароль</Link>
-        </p>
-        <p>
-          Забыли пароль?
-          <Link to="/register"> Зарегистрироваться</Link>
+          Уже зарегистрированы?
+          <Link to="/login"> Войти</Link>
         </p>
       </div>
     </div>
