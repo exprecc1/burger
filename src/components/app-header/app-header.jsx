@@ -6,8 +6,14 @@ import {
   Logo,
   ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useSelector } from 'react-redux';
+import { getUser, getIsAuthChecked } from '../../services/slices/user/user';
 import style from './app-header.module.css';
+
 export const AppHeader = () => {
+  const user = useSelector(getUser);
+  const isAuthChecked = useSelector(getIsAuthChecked);
+
   return (
     <header className={style.header}>
       <div className={style.container}>
@@ -32,7 +38,7 @@ export const AppHeader = () => {
           <div className={style.user}>
             <a href="#">
               <ProfileIcon type="secondary" />
-              <span>Личный кабинет</span>
+              {isAuthChecked ? <span>{user.email}</span> : <span>Личный кабинет</span>}
             </a>
           </div>
         </section>
