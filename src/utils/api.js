@@ -74,7 +74,7 @@ const getUser = async () => {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `${accessToken}`, // Исправлено: убрано лишнее "Bearer"
+      Authorization: `${accessToken}`,
     },
   });
 
@@ -97,7 +97,7 @@ const updateUser = async (userData) => {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `${accessToken}`, // Исправлено: убрано лишнее "Bearer"
+      Authorization: `${accessToken}`,
     },
     body: JSON.stringify(userData),
   });
