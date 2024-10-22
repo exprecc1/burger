@@ -1,14 +1,9 @@
 import React from 'react';
 import style from './login.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { login } from '../../services/slices/user/action';
+import { Link } from 'react-router-dom';
 
 export const LoginPage = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [showPassword, setShowPassword] = React.useState(false);
@@ -18,15 +13,6 @@ export const LoginPage = () => {
   const onIconClick = () => {
     setShowPassword(!showPassword);
     setTimeout(() => passwordRef.current.focus(), 0);
-  };
-
-  const handleLogin = async () => {
-    try {
-      await dispatch(login({ email, password }));
-      navigate('/');
-    } catch (error) {
-      console.error('Login failed:', error);
-    }
   };
 
   return (
@@ -51,7 +37,7 @@ export const LoginPage = () => {
           type={showPassword ? 'text' : 'password'}
           placeholder={'Пароль'}
           onChange={(e) => setPassword(e.target.value)}
-          icon={'ShowIcon'}
+          icon={'CurrencyIcon'}
           value={password}
           name={'name'}
           error={false}
@@ -62,17 +48,17 @@ export const LoginPage = () => {
           extraClass="ml-1"
         />
       </div>
-      <Button htmlType="button" type="primary" size="medium" onClick={handleLogin}>
+      <Button htmlType="button" type="primary" size="medium">
         Войти
       </Button>
       <div className={style.conteiner__footer}>
         <p>
           Вы — новый пользователь?
-          <Link to="/register"> Зарегистрироваться</Link>
+          <Link to="/forgot-password"> Зарегистрироваться</Link>
         </p>
         <p>
           Забыли пароль?
-          <Link to="/forgot-password"> Восстановить пароль</Link>
+          <Link to="/register"> Восстановить пароль</Link>
         </p>
       </div>
     </div>

@@ -1,29 +1,22 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import {
   BurgerIcon,
   ListIcon,
   Logo,
   ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector } from 'react-redux';
-import { getUser, getIsAuthChecked } from '../../services/slices/user/user';
 import style from './app-header.module.css';
-
 export const AppHeader = () => {
-  const user = useSelector(getUser);
-  const isAuthChecked = useSelector(getIsAuthChecked);
-
   return (
     <header className={style.header}>
       <div className={style.container}>
         <section className={style.head}>
           <div className={style.toggle}>
             <div className={style.builder}>
-              <Link to="/">
+              <a href="#">
                 <BurgerIcon type="primary" />
                 <span>Конструктор</span>
-              </Link>
+              </a>
             </div>
             <div className={style.tape}>
               <a href="#">
@@ -36,10 +29,10 @@ export const AppHeader = () => {
             <Logo />
           </div>
           <div className={style.user}>
-            <Link to="/profile">
+            <a href="#">
               <ProfileIcon type="secondary" />
-              {isAuthChecked && user ? <span>{user.email}</span> : <span>Личный кабинет</span>}
-            </Link>
+              <span>Личный кабинет</span>
+            </a>
           </div>
         </section>
       </div>
