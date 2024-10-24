@@ -54,7 +54,7 @@ export const LoginPage = () => {
           type={showPassword ? 'text' : 'password'}
           placeholder={'Пароль'}
           onChange={(e) => setPassword(e.target.value)}
-          icon={'CurrencyIcon'}
+          icon={'ShowIcon'}
           value={password}
           name={'name'}
           error={false}
@@ -71,11 +71,11 @@ export const LoginPage = () => {
       <div className={style.conteiner__footer}>
         <p>
           Вы — новый пользователь?
-          <Link to="/forgot-password"> Зарегистрироваться</Link>
+          <Link to="/register"> Зарегистрироваться</Link>
         </p>
         <p>
           Забыли пароль?
-          <Link to="/register"> Восстановить пароль</Link>
+          <Link to="/forgot-password"> Восстановить пароль</Link>
         </p>
       </div>
     </div>
