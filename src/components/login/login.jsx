@@ -54,7 +54,7 @@ export const LoginPage = () => {
           type={showPassword ? 'text' : 'password'}
           placeholder={'Пароль'}
           onChange={(e) => setPassword(e.target.value)}
-          icon={'ShowIcon'}
+          icon={'CurrencyIcon'}
           value={password}
           name={'name'}
           error={false}
@@ -65,17 +65,17 @@ export const LoginPage = () => {
           extraClass="ml-1"
         />
       </div>
-      <Button htmlType="button" type="primary" size="medium" onClick={handleLogin}>
+      <Button onClick={handleLogin} htmlType="button" type="primary" size="medium">
         Войти
       </Button>
       <div className={style.conteiner__footer}>
         <p>
           Вы — новый пользователь?
-          <Link to="/register"> Зарегистрироваться</Link>
+          <Link to="/forgot-password"> Зарегистрироваться</Link>
         </p>
         <p>
           Забыли пароль?
-          <Link to="/forgot-password"> Восстановить пароль</Link>
+          <Link to="/register"> Восстановить пароль</Link>
         </p>
       </div>
     </div>
