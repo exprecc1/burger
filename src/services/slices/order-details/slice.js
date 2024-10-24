@@ -2,10 +2,12 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { request } from '../../../utils/request';
 
 export const submitOrder = createAsyncThunk('order/fetchOrderSubmitted', async (ingredients) => {
+  const accessToken = localStorage.getItem('accessToken');
   const options = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `${accessToken}`,
     },
     body: JSON.stringify({ ingredients }),
   };
