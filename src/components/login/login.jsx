@@ -1,13 +1,14 @@
 import React from 'react';
 import style from './login.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { login } from '../../services/slices/user/action';
 
 export const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -20,10 +21,12 @@ export const LoginPage = () => {
     setTimeout(() => passwordRef.current.focus(), 0);
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     try {
       await dispatch(login({ email, password }));
-      navigate('/');
+      const from = location.state?.from || '/';
+      navigate(from);
     } catch (error) {
       console.error('Login failed:', error);
     }

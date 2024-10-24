@@ -10,6 +10,7 @@ import { ProfilePage } from './components/profile/profile';
 import { OnlyAuth, OnlyUnAuth } from './components/protected-route';
 import { useDispatch } from 'react-redux';
 import { checkUserAuth, fetchUser } from './services/slices/user/action';
+
 import './App.css';
 
 function App() {

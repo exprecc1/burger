@@ -17,6 +17,7 @@ const register = async (userData) => {
   const data = await response.json();
   localStorage.setItem('accessToken', data.accessToken);
   localStorage.setItem('refreshToken', data.refreshToken);
+  startTokenRefreshInterval(); //Запуск таймера
   return data;
 };
 
@@ -37,6 +38,7 @@ const login = async (credentials) => {
   const data = await response.json();
   localStorage.setItem('accessToken', data.accessToken);
   localStorage.setItem('refreshToken', data.refreshToken);
+  startTokenRefreshInterval(); //Запуск таймера
   return data;
 };
 
@@ -58,7 +60,7 @@ const logout = async () => {
   if (!response.ok) {
     throw new Error('Logout failed');
   }
-
+  clearTokenRefreshInterval(); //очистка таймера
   return;
 };
 
@@ -130,6 +132,7 @@ const refreshToken = async () => {
   const data = await response.json();
   localStorage.setItem('accessToken', data.accessToken);
   localStorage.setItem('refreshToken', data.refreshToken);
+  resetTokenRefreshInterval();
   return data;
 };
 
@@ -168,6 +171,30 @@ const resetPassword = async (password, token) => {
 
   const data = await response.json();
   return data;
+};
+
+// Обновление токенов каждые 20 минут
+let tokenRefreshInterval;
+
+const startTokenRefreshInterval = () => {
+  tokenRefreshInterval = setInterval(async () => {
+    try {
+      await refreshToken();
+    } catch (error) {
+      console.error('Failed to refresh token:', error);
+    }
+  }, 20 * 60 * 1000);
+};
+
+const resetTokenRefreshInterval = () => {
+  clearTokenRefreshInterval(); // Очищаем текущий интервал
+  startTokenRefreshInterval(); // Запускаем новый интервал
+};
+
+const clearTokenRefreshInterval = () => {
+  if (tokenRefreshInterval) {
+    clearInterval(tokenRefreshInterval);
+  }
 };
 
 export const api = {
