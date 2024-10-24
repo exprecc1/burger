@@ -9,7 +9,7 @@ import { ResetPasswordPage } from './components/reset-password/reset-password';
 import { ProfilePage } from './components/profile/profile';
 import { OnlyAuth, OnlyUnAuth } from './components/protected-route';
 import { useDispatch } from 'react-redux';
-import { checkUserAuth } from './services/slices/user/action';
+import { checkUserAuth, fetchUser } from './services/slices/user/action';
 import './App.css';
 
 function App() {
@@ -17,7 +17,9 @@ function App() {
 
   React.useEffect(() => {
     dispatch(checkUserAuth());
+    dispatch(fetchUser());
   }, [dispatch]);
+
   return (
     <Router>
       <AppHeader />
@@ -33,7 +35,7 @@ function App() {
         />
         <Route
           exact
-          path="/forgot-password/reset-password"
+          path="/reset-password/:token"
           element={<OnlyUnAuth component={<ResetPasswordPage />} />}
         />
       </Routes>

@@ -1,16 +1,24 @@
 import React from 'react';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate } from 'react-router-dom';
+import { api } from '../../utils/api';
 import style from './forgot-password.module.css';
 export const ForgotPasswordPage = () => {
   const navigate = useNavigate();
   const [email, setEmail] = React.useState('');
   const emailRef = React.useRef(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Отправка запроса на восстановление пароля
-    navigate('/forgot-password/reset-password');
+    try {
+      const response = await api.forgotPassword(email);
+      if (response.success) {
+        const token = localStorage.getItem('accessToken');
+        navigate(`/reset-password/${token}`);
+      }
+    } catch (error) {
+      console.error('Ошибка отправки сброса по почте:', error);
+    }
   };
 
   return (

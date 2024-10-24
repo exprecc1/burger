@@ -59,8 +59,6 @@ const logout = async () => {
     throw new Error('Logout failed');
   }
 
-  localStorage.removeItem('accessToken');
-  localStorage.removeItem('refreshToken');
   return;
 };
 
@@ -114,7 +112,7 @@ const updateUser = async (userData) => {
 const refreshToken = async () => {
   const refreshToken = localStorage.getItem('refreshToken');
   if (!refreshToken) {
-    throw new Error('No refresh token found');
+    throw new Error('Токен для обновления не найден');
   }
 
   const response = await fetch(`${BASE_URL}/auth/token`, {
@@ -126,12 +124,49 @@ const refreshToken = async () => {
   });
 
   if (!response.ok) {
-    throw new Error('Token refresh failed');
+    throw new Error('Не удалось обновить токен');
   }
 
   const data = await response.json();
   localStorage.setItem('accessToken', data.accessToken);
   localStorage.setItem('refreshToken', data.refreshToken);
+  return data;
+};
+
+// Восстановление пароля
+const forgotPassword = async (email) => {
+  const response = await fetch(`${BASE_URL}/password-reset`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to send reset email');
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+// Сброс пароля
+const resetPassword = async (password, token) => {
+  const response = await fetch(`${BASE_URL}/password-reset/reset`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `${token}`,
+    },
+    body: JSON.stringify({ password, token }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to reset password');
+  }
+
+  const data = await response.json();
   return data;
 };
 
@@ -142,4 +177,6 @@ export const api = {
   register,
   refreshToken,
   updateUser,
+  forgotPassword,
+  resetPassword,
 };

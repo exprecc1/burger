@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../services/slices/user/user';
@@ -130,12 +130,18 @@ export const ProfilePage = () => {
           />
         </div>
         <div className={style.buttons__container}>
-          <button onClick={handleSave} className={style.save__button}>
-            Сохранить
-          </button>
-          <button onClick={handleCancel} className={style.cancel__button}>
+          <span onClick={handleCancel} className={style.cancel}>
             Отмена
-          </button>
+          </span>
+          <Button
+            onClick={handleSave}
+            htmlType="button"
+            type="primary"
+            size="small"
+            extraClass="ml-2"
+          >
+            Сохранить
+          </Button>
         </div>
       </div>
     </div>
