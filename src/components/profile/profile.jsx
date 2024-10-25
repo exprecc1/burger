@@ -1,6 +1,6 @@
 import React from 'react';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../services/slices/user/user';
 import { logout, fetchUser, updateUser } from '../../services/slices/user/action';
@@ -9,6 +9,7 @@ import style from './profile.module.css';
 export const ProfilePage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
   const user = useSelector(getUser);
 
   const [name, setName] = React.useState(user?.name || '');
