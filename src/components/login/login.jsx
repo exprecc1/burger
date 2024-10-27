@@ -26,7 +26,7 @@ export const LoginPage = () => {
     try {
       await dispatch(login({ email, password }));
       const from = location.state?.from || '/';
-      navigate(from);
+      navigate(from, { replace: true });
     } catch (error) {
       console.error('Login failed:', error);
     }

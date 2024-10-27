@@ -1,8 +1,9 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { AppHeader } from './components/app-header/app-header';
 import { HomePage } from './page/home';
+import { useModal } from './hooks/useModal';
 import { Modal } from './components/modal/modal';
 import { LoginPage } from './components/login/login';
 import { RegisterPage } from './components/register/register';
@@ -17,6 +18,7 @@ import { checkUserAuth, fetchUser } from './services/slices/user/action';
 import './App.css';
 
 function App() {
+  const { isModal, closeModal } = useModal();
   const dispatch = useDispatch();
   const location = useLocation();
   const backgroundLocation = location.state?.backgroundLocation;
@@ -48,7 +50,11 @@ function App() {
       </Routes>
       {backgroundLocation && (
         <Routes>
-          <Route exact path="/ingredient/:id" element={<Modal />} />
+          <Route
+            exact
+            path="/ingredient/:id"
+            element={<Modal isVisible={isModal} onClose={closeModal} />}
+          />
         </Routes>
       )}
     </>

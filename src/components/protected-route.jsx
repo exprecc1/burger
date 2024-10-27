@@ -35,12 +35,16 @@ const Protected = ({ onlyUnAuth = false, component }) => {
   return component;
 };
 
-export const OnlyAuth = Protected;
+export const OnlyAuth = ({ component }) => <Protected onlyUnAuth={false} component={component} />;
 export const OnlyUnAuth = ({ component }) => <Protected onlyUnAuth={true} component={component} />;
 
 Protected.propTypes = {
   component: PropTypes.element.isRequired,
   onlyUnAuth: PropTypes.bool.isRequired,
+};
+
+OnlyAuth.propTypes = {
+  component: PropTypes.element.isRequired,
 };
 
 OnlyUnAuth.propTypes = {

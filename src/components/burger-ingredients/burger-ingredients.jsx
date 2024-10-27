@@ -10,7 +10,8 @@ import style from './burger-ingredients.module.css';
 
 export const BurgerIngredients = () => {
   const [current, setCurrent] = React.useState('one');
-  const { isModal, currentIngredient, openModal, closeModal } = useModal();
+  const { isModal, currentIngredient, closeModal, openIngredientModal } =
+    useModal('ingredientModal');
 
   const dispatch = useDispatch();
   const { items, loading, error } = useSelector((state) => state.ingredientsAll);
@@ -103,13 +104,21 @@ export const BurgerIngredients = () => {
             </div>
             <div className={style.burger__ingredients} onScroll={handleScroll}>
               <div ref={bunRef}>
-                <BurgerIngredientsList title="Булки" item={bun} choiceItem={openModal} />
+                <BurgerIngredientsList title="Булки" item={bun} choiceItem={openIngredientModal} />
               </div>
               <div ref={sauceRef}>
-                <BurgerIngredientsList title="Соусы" item={sauce} choiceItem={openModal} />
+                <BurgerIngredientsList
+                  title="Соусы"
+                  item={sauce}
+                  choiceItem={openIngredientModal}
+                />
               </div>
               <div ref={stuffRef}>
-                <BurgerIngredientsList title="Начинки" item={stuff} choiceItem={openModal} />
+                <BurgerIngredientsList
+                  title="Начинки"
+                  item={stuff}
+                  choiceItem={openIngredientModal}
+                />
               </div>
             </div>
             {currentIngredient && (

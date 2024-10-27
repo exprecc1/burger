@@ -1,5 +1,4 @@
 import React from 'react';
-import { useState } from 'react';
 import { viewIngredient, removeViewIngredient } from '../services/slices/current-ingredient/slice';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { clearIngredients } from '../services/slices/constructor-list/slice';
@@ -11,9 +10,14 @@ export const useModal = () => {
   const dispatch = useDispatch();
   const { currentIngredient } = useSelector((state) => state.currentIngredient);
   const orderStatus = useSelector((state) => state.order.status);
-  const [isModal, setIsModal] = useState(false);
+  const [isModal, setIsModal] = React.useState(false);
 
-  const openModal = (item) => {
+  const openModal = () => {
+    document.body.style.overflow = 'hidden';
+    setIsModal(true);
+  };
+
+  const openIngredientModal = (item) => {
     document.body.style.overflow = 'hidden';
     dispatch(viewIngredient(item));
     setIsModal(true);
@@ -26,13 +30,14 @@ export const useModal = () => {
     }
     dispatch(removeViewIngredient());
     document.body.style.overflow = 'auto';
-    navigate(-1);
+    setIsModal(false);
   };
 
   return {
     isModal,
     currentIngredient,
     openModal,
+    openIngredientModal,
     closeModal,
   };
 };

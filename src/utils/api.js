@@ -60,6 +60,8 @@ const logout = async () => {
   if (!response.ok) {
     throw new Error('Logout failed');
   }
+  localStorage.removeItem('accessToken');
+  localStorage.removeItem('refreshToken');
   clearTokenRefreshInterval(); //очистка таймера
   return;
 };

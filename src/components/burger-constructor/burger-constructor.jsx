@@ -12,16 +12,22 @@ import { useModal } from '../../hooks/useModal';
 import {
   addIngredient,
   updateIngredientsOrder,
+  clearIngredients,
 } from '../../services/slices/constructor-list/slice';
 import { submitOrder } from '../../services/slices/order-details/slice';
 import { v4 as uuidv4 } from 'uuid';
 import style from './burger-constructor.module.css';
 import { DraggableIngredient } from './draggable-ingredient';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export const BurgerConstructor = () => {
-  const { isModal, openModal, closeModal } = useModal();
+  const { isModal, openModal, closeModal } = useModal('orderModal');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const ingredients = useSelector((state) => state.constructorList.ingredients);
+  const user = useSelector((state) => state.user.user);
+  const orderStatus = useSelector((state) => state.order.status);
 
   const bun = ingredients.filter((obj) => obj.type && obj.type.includes('bun'));
   const nonBunIngredients = ingredients.filter((obj) => obj.type && obj.type !== 'bun');
@@ -44,7 +50,6 @@ export const BurgerConstructor = () => {
     accept: 'bun',
     drop: (item) => {
       if (item.type === 'bun' && !item.isInConstructor) {
-        // Проверка, что ингредиент не в конструкторе
         handleDrop(item);
       }
     },
@@ -57,7 +62,6 @@ export const BurgerConstructor = () => {
     accept: 'bun',
     drop: (item) => {
       if (item.type === 'bun' && !item.isInConstructor) {
-        // Проверка, что ингредиент не в конструкторе
         handleDrop(item);
       }
     },
@@ -70,7 +74,6 @@ export const BurgerConstructor = () => {
     accept: 'ingredient',
     drop: (item) => {
       if (item.type !== 'bun' && !item.isInConstructor) {
-        // Проверка, что ингредиент не в конструкторе
         handleDrop(item);
       }
     },
@@ -80,6 +83,18 @@ export const BurgerConstructor = () => {
   });
 
   const handleOrderSubmit = () => {
+    if (!user) {
+      // Перенаправляем на страницу авторизации
+      navigate('/login', { state: { from: location } });
+      return;
+    }
+    if (ingredients.length === 0) {
+      alert('Нельзя оформить пустой заказ');
+      return;
+    }
+
+    console.log(user);
+
     const ingredientIds = ingredients.map((ingredient) => ingredient._id);
     dispatch(submitOrder(ingredientIds));
     openModal();
@@ -94,6 +109,12 @@ export const BurgerConstructor = () => {
     },
     [bun, nonBunIngredients, dispatch],
   );
+
+  React.useEffect(() => {
+    if (orderStatus === 'success') {
+      dispatch(clearIngredients());
+    }
+  }, [orderStatus, dispatch]);
 
   return (
     <div className="builder">
