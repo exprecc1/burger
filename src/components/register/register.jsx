@@ -23,7 +23,8 @@ export const RegisterPage = () => {
     setTimeout(() => passwordRef.current.focus(), 0);
   };
 
-  const handleRegister = async () => {
+  const handleRegister = async (e) => {
+    e.preventDefault();
     try {
       await dispatch(registerUser({ name, email, password }));
       navigate('/');
@@ -35,53 +36,55 @@ export const RegisterPage = () => {
   return (
     <div className={style.container_box}>
       <h3>Регистрация</h3>
-      <div className={style.input__container}>
-        <Input
-          type={'text'}
-          placeholder={'Имя'}
-          onChange={(e) => setName(e.target.value)}
-          value={name}
-          name={'name'}
-          error={false}
-          ref={nameRef}
-          errorText={'Ошибка'}
-          size={'default'}
-          extraClass="ml-1"
-        />
-      </div>
-      <div className={style.input__container}>
-        <Input
-          type={'email'}
-          placeholder={'E-mail'}
-          onChange={(e) => setEmail(e.target.value)}
-          value={email}
-          name={'email'}
-          error={false}
-          ref={emailRef}
-          errorText={'Ошибка'}
-          size={'default'}
-          extraClass="ml-1"
-        />
-      </div>
-      <div className={style.input__container}>
-        <Input
-          type={showPassword ? 'text' : 'password'}
-          placeholder={'Пароль'}
-          onChange={(e) => setPassword(e.target.value)}
-          icon={'ShowIcon'}
-          value={password}
-          name={'password'}
-          error={false}
-          ref={passwordRef}
-          onIconClick={onIconClick}
-          errorText={'Ошибка'}
-          size={'default'}
-          extraClass="ml-1"
-        />
-      </div>
-      <Button htmlType="button" type="primary" size="medium" onClick={handleRegister}>
-        Зарегистрироваться
-      </Button>
+      <form onSubmit={handleRegister}>
+        <div className={style.input__container}>
+          <Input
+            type={'text'}
+            placeholder={'Имя'}
+            onChange={(e) => setName(e.target.value)}
+            value={name}
+            name={'name'}
+            error={false}
+            ref={nameRef}
+            errorText={'Ошибка'}
+            size={'default'}
+            extraClass="ml-1"
+          />
+        </div>
+        <div className={style.input__container}>
+          <Input
+            type={'email'}
+            placeholder={'E-mail'}
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
+            name={'email'}
+            error={false}
+            ref={emailRef}
+            errorText={'Ошибка'}
+            size={'default'}
+            extraClass="ml-1"
+          />
+        </div>
+        <div className={style.input__container}>
+          <Input
+            type={showPassword ? 'text' : 'password'}
+            placeholder={'Пароль'}
+            onChange={(e) => setPassword(e.target.value)}
+            icon={'ShowIcon'}
+            value={password}
+            name={'password'}
+            error={false}
+            ref={passwordRef}
+            onIconClick={onIconClick}
+            errorText={'Ошибка'}
+            size={'default'}
+            extraClass="ml-1"
+          />
+        </div>
+        <Button htmlType="submit" type="primary" size="medium">
+          Зарегистрироваться
+        </Button>
+      </form>
       <div className={style.conteiner__footer}>
         <p>
           Уже зарегистрированы?

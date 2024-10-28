@@ -2,13 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useDrag } from 'react-dnd';
 import { useSelector } from 'react-redux';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { IngredientType } from '../../../../utils/types';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './burger-ingredient-item.module.css';
 
 export const BurgerIngredientsItem = ({ onClick, item }) => {
   const dragType = item.type === 'bun' ? 'bun' : 'ingredient';
+  const navigate = useNavigate();
 
   const [{ isDragging }, drag] = useDrag({
     type: dragType,
@@ -30,24 +31,26 @@ export const BurgerIngredientsItem = ({ onClick, item }) => {
 
   const location = useLocation();
 
+  const handleClick = () => {
+    navigate(`/ingredient/${item._id}`, { state: { backgroundLocation: location } });
+  };
+
   return (
-    <Link to={`/ingredient/${item._id}`} state={{ backgroundLocation: location }}>
-      <div
-        ref={drag}
-        className={style.ingredients}
-        onClick={onClick}
-        style={{ opacity: isDragging ? 0.5 : 1 }}
-      >
-        {count > 0 ? <Counter count={count} size="default" extraClass="m-1" /> : null}
-        <img src={item.image} alt={item.name} />
-        <p>
-          {item.price} <CurrencyIcon />
-        </p>
-        <div className={style.ingredients__footer}>
-          <p>{item.name}</p>
-        </div>
+    <div
+      ref={drag}
+      className={style.ingredients}
+      onClick={handleClick}
+      style={{ opacity: isDragging ? 0.5 : 1 }}
+    >
+      {count > 0 ? <Counter count={count} size="default" extraClass="m-1" /> : null}
+      <img src={item.image} alt={item.name} />
+      <p>
+        {item.price} <CurrencyIcon />
+      </p>
+      <div className={style.ingredients__footer}>
+        <p>{item.name}</p>
       </div>
-    </Link>
+    </div>
   );
 };
 

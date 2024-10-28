@@ -4,61 +4,36 @@ import { createPortal } from 'react-dom';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ModalOverlay } from './modal-overlay/modal-overlay';
 import style from './modal.module.css';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { removeViewIngredient } from '../../services/slices/current-ingredient/slice';
 
-export const Modal = ({ onClose, children, isVisible }) => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const location = useLocation();
-  const backgroundLocation = location.state?.backgroundLocation;
-
-  const handleClick = (event) => {
+export const Modal = ({ onClose, children }) => {
+  const handleClickOverlay = (event) => {
     if (event.target.className === '_modal__overlay__active_15okl_19') {
       onClose();
-      if (backgroundLocation) {
-        navigate(-1);
-      } else {
-        navigate('/');
-      }
     }
   };
 
   const handleKeyDown = (event) => {
     if (event.key === 'Escape') {
-      dispatch(removeViewIngredient());
-      if (backgroundLocation) {
-        navigate(-1);
-      } else {
-        navigate('/');
-      }
+      onClose();
     }
   };
 
   React.useEffect(() => {
-    if (isVisible) {
-      document.addEventListener('keydown', handleKeyDown);
-      document.addEventListener('mousedown', handleClick);
-    } else {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.removeEventListener('mousedown', handleClick);
-    }
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('mousedown', handleClickOverlay);
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-      document.removeEventListener('mousedown', handleClick);
+      document.removeEventListener('mousedown', handleClickOverlay);
     };
-  }, [isVisible]);
-
-  if (!isVisible) return null;
+  }, [onClose]);
 
   return createPortal(
     <>
-      <ModalOverlay isVisible={isVisible} />
+      <ModalOverlay onClose={onClose} />
       <div id={style.modal} className={style.modal__content}>
         <div className="modal__header">
-          <CloseIcon onClick={onClose} type="primary" className={style.close} />
+          <CloseIcon onClick={() => onClose()} type="primary" className={style.close} />
         </div>
         {children}
       </div>
@@ -68,7 +43,6 @@ export const Modal = ({ onClose, children, isVisible }) => {
 };
 
 Modal.propTypes = {
-  isVisible: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   children: PropTypes.node,
 };

@@ -1,9 +1,8 @@
 import React from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppHeader } from './components/app-header/app-header';
 import { HomePage } from './page/home';
-import { useModal } from './hooks/useModal';
 import { Modal } from './components/modal/modal';
 import { LoginPage } from './components/login/login';
 import { RegisterPage } from './components/register/register';
@@ -14,19 +13,34 @@ import { IngredientDetailsPage } from './components/burger-ingredients/burger-in
 import { OnlyAuth, OnlyUnAuth } from './components/protected-route';
 
 import { checkUserAuth, fetchUser } from './services/slices/user/action';
+import { fetchAllIngredients } from './services/slices/all-ingredients/slice';
 
 import './App.css';
 
 function App() {
-  const { isModal, closeModal } = useModal();
   const dispatch = useDispatch();
   const location = useLocation();
   const backgroundLocation = location.state?.backgroundLocation;
+  const navigate = useNavigate();
+  const { loading, error } = useSelector((state) => state.ingredientsAll);
+
+  // Получение данных с api
+  React.useEffect(() => {
+    dispatch(fetchAllIngredients());
+  }, [dispatch]);
 
   React.useEffect(() => {
     dispatch(checkUserAuth());
     dispatch(fetchUser());
   }, [dispatch]);
+
+  if (loading) {
+    return <div>Загрузка...</div>;
+  }
+
+  if (error) {
+    return <div>Ошибка: {error}</div>;
+  }
 
   return (
     <>
@@ -53,7 +67,11 @@ function App() {
           <Route
             exact
             path="/ingredient/:id"
-            element={<Modal isVisible={isModal} onClose={closeModal} />}
+            element={
+              <Modal onClose={() => navigate(-1)}>
+                <IngredientDetailsPage />
+              </Modal>
+            }
           />
         </Routes>
       )}

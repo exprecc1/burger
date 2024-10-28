@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDrop } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -21,7 +21,7 @@ import { DraggableIngredient } from './draggable-ingredient';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 export const BurgerConstructor = () => {
-  const { isModal, openModal, closeModal } = useModal('orderModal');
+  const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -36,6 +36,8 @@ export const BurgerConstructor = () => {
     const newItem = { ...item, uuid: uuidv4() };
     dispatch(addIngredient(newItem));
   };
+
+  const handleClose = () => setIsOpen(false);
 
   React.useEffect(() => {
     console.log('Ingredients changed:', ingredients);
@@ -97,7 +99,7 @@ export const BurgerConstructor = () => {
 
     const ingredientIds = ingredients.map((ingredient) => ingredient._id);
     dispatch(submitOrder(ingredientIds));
-    openModal();
+    setIsOpen(true);
   };
 
   const moveIngredient = React.useCallback(
@@ -192,9 +194,11 @@ export const BurgerConstructor = () => {
           Оформить заказ
         </Button>
       </div>
-      <Modal isVisible={isModal} onClose={closeModal}>
-        <OrderDetails />
-      </Modal>
+      {isOpen && (
+        <Modal onClose={handleClose}>
+          <OrderDetails />
+        </Modal>
+      )}
     </div>
   );
 };

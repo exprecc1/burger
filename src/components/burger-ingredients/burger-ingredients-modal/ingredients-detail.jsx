@@ -1,7 +1,27 @@
-import { IngredientType } from '../../../utils/types';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import style from '../burger-ingredients-modal/ingredients-detail.module.css';
 
-export const IngredientDetails = ({ item }) => {
+export const IngredientDetails = () => {
+  const { items, loading, error } = useSelector((state) => state.ingredientsAll);
+  const { id } = useParams();
+  const item = items.find((ingredient) => ingredient._id === id);
+  console.log(items);
+  console.log(id);
+  console.log(item);
+
+  if (loading) {
+    return <div>Загрузка...</div>;
+  }
+
+  if (error) {
+    return <div>Ошибка: {error.message}</div>;
+  }
+
+  if (!item) {
+    return <div>Ингредиент не найден</div>;
+  }
+
   return (
     <div className={style.modal__content__ingredients}>
       <div className={style.title__ingredients}>
@@ -29,8 +49,4 @@ export const IngredientDetails = ({ item }) => {
       </div>
     </div>
   );
-};
-
-IngredientDetails.propTypes = {
-  item: IngredientType.isRequired,
 };

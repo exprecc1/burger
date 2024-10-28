@@ -30,7 +30,7 @@ export const IngredientDetailsPage = () => {
 
   return (
     <div>
-      <IngredientDetails item={ingredient} />
+      <IngredientDetails />
     </div>
   );
 };
