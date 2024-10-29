@@ -5,22 +5,17 @@ import { BurgerIngredientsList } from './burger-ingredients-list/burger-ingredie
 import { IngredientDetails } from './burger-ingredients-modal/ingredients-detail';
 import { Modal } from '../modal/modal';
 import { useModal } from '../../hooks/useModal';
-import { fetchAllIngredients } from '../../services/slices/all-ingredients/slice';
+import { useLocation, useParams } from 'react-router-dom';
 import style from './burger-ingredients.module.css';
 
 export const BurgerIngredients = () => {
   const [current, setCurrent] = React.useState('one');
-  const { isModal, currentIngredient, openModal, closeModal } = useModal();
-
-  const dispatch = useDispatch();
+  const { currentIngredient, closeModal, openModal } = useModal();
   const { items, loading, error } = useSelector((state) => state.ingredientsAll);
+  const location = useLocation();
+  const { id } = useParams();
 
-  //Получение данных с api
-  React.useEffect(() => {
-    dispatch(fetchAllIngredients());
-  }, [dispatch]);
-
-  //Фильтрация по категориям
+  // Фильтрация по категориям
   const [bun, sauce, stuff] = React.useMemo(() => {
     if (!items) {
       return [[], [], []]; // Если undefined
@@ -113,8 +108,8 @@ export const BurgerIngredients = () => {
               </div>
             </div>
             {currentIngredient && (
-              <Modal isVisible={isModal} onClose={closeModal}>
-                <IngredientDetails item={currentIngredient} />
+              <Modal onClose={closeModal}>
+                <IngredientDetails />
               </Modal>
             )}
           </div>

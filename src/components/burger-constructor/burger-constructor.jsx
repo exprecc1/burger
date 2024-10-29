@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDrop } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -12,16 +12,22 @@ import { useModal } from '../../hooks/useModal';
 import {
   addIngredient,
   updateIngredientsOrder,
+  clearIngredients,
 } from '../../services/slices/constructor-list/slice';
 import { submitOrder } from '../../services/slices/order-details/slice';
 import { v4 as uuidv4 } from 'uuid';
 import style from './burger-constructor.module.css';
 import { DraggableIngredient } from './draggable-ingredient';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export const BurgerConstructor = () => {
-  const { isModal, openModal, closeModal } = useModal();
+  const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const ingredients = useSelector((state) => state.constructorList.ingredients);
+  const user = useSelector((state) => state.user.user);
+  const orderStatus = useSelector((state) => state.order.status);
 
   const bun = ingredients.filter((obj) => obj.type && obj.type.includes('bun'));
   const nonBunIngredients = ingredients.filter((obj) => obj.type && obj.type !== 'bun');
@@ -30,6 +36,8 @@ export const BurgerConstructor = () => {
     const newItem = { ...item, uuid: uuidv4() };
     dispatch(addIngredient(newItem));
   };
+
+  const handleClose = () => setIsOpen(false);
 
   React.useEffect(() => {
     console.log('Ingredients changed:', ingredients);
@@ -44,7 +52,6 @@ export const BurgerConstructor = () => {
     accept: 'bun',
     drop: (item) => {
       if (item.type === 'bun' && !item.isInConstructor) {
-        // Проверка, что ингредиент не в конструкторе
         handleDrop(item);
       }
     },
@@ -57,7 +64,6 @@ export const BurgerConstructor = () => {
     accept: 'bun',
     drop: (item) => {
       if (item.type === 'bun' && !item.isInConstructor) {
-        // Проверка, что ингредиент не в конструкторе
         handleDrop(item);
       }
     },
@@ -70,7 +76,6 @@ export const BurgerConstructor = () => {
     accept: 'ingredient',
     drop: (item) => {
       if (item.type !== 'bun' && !item.isInConstructor) {
-        // Проверка, что ингредиент не в конструкторе
         handleDrop(item);
       }
     },
@@ -80,9 +85,21 @@ export const BurgerConstructor = () => {
   });
 
   const handleOrderSubmit = () => {
+    if (!user) {
+      // Перенаправляем на страницу авторизации
+      navigate('/login', { state: { from: location } });
+      return;
+    }
+    if (ingredients.length === 0) {
+      alert('Нельзя оформить пустой заказ');
+      return;
+    }
+
+    console.log(user);
+
     const ingredientIds = ingredients.map((ingredient) => ingredient._id);
     dispatch(submitOrder(ingredientIds));
-    openModal();
+    setIsOpen(true);
   };
 
   const moveIngredient = React.useCallback(
@@ -94,6 +111,12 @@ export const BurgerConstructor = () => {
     },
     [bun, nonBunIngredients, dispatch],
   );
+
+  React.useEffect(() => {
+    if (orderStatus === 'success') {
+      dispatch(clearIngredients());
+    }
+  }, [orderStatus, dispatch]);
 
   return (
     <div className="builder">
@@ -171,9 +194,11 @@ export const BurgerConstructor = () => {
           Оформить заказ
         </Button>
       </div>
-      <Modal isVisible={isModal} onClose={closeModal}>
-        <OrderDetails />
-      </Modal>
+      {isOpen && (
+        <Modal onClose={handleClose}>
+          <OrderDetails />
+        </Modal>
+      )}
     </div>
   );
 };

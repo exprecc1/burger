@@ -12,7 +12,7 @@ export const OrderDetails = () => {
   }
 
   if (status === 'failed') {
-    return <div className={style.error}>Ошибка: {error}</div>;
+    return <div className={style.error}>Ошибка в оформлении заказа {error}</div>;
   }
 
   return (

@@ -1,5 +1,5 @@
 import { checkResponse } from './checkResponse';
-const BASE_URL = 'https://norma.nomoreparties.space/api';
+export const BASE_URL = 'https://norma.nomoreparties.space/api';
 
 export function request(endpoint, options = {}) {
   const url = `${BASE_URL}${endpoint}`;

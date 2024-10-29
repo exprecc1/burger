@@ -1,0 +1,81 @@
+.container__box {
+  margin-top: 120px;
+  width: 1077px;
+  display: flex;
+  font-family: 'Jet Brains Mono';
+  font-weight: 400;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.setting__profile {
+  width: 480px;
+  height: 430px;
+}
+
+.nav__profile {
+  width: 320px;
+  height: 192px;
+}
+
+.nav__title {
+  text-align: left;
+  padding-top: 24px;
+}
+
+.nav__link {
+  color: #8585ad;
+  font-size: 24px;
+  line-height: 30px;
+  font-family: 'Jet Brains Mono';
+  font-weight: 700;
+}
+
+.nav__link:hover {
+  color: #f2f2f3;
+}
+
+.nav__footer {
+  text-align: left;
+  padding-top: 80px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #8585ad;
+}
+
+.input__container {
+  display: inline-block;
+  margin-bottom: 24px;
+  width: fit-content;
+  text-align: left;
+}
+
+.input__container input:disabled {
+  color: gray;
+  background-color: #f5f5f5;
+}
+
+.conteiner__footer {
+  margin-top: 80px;
+}
+
+.active {
+  composes: nav__link;
+  color: #fff;
+}
+
+.buttons__container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.cancel {
+  color: #4c4cff;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  margin-right: 24px;
+  cursor: pointer;
+}
