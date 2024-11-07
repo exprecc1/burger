@@ -46,26 +46,23 @@ function App() {
     <>
       <AppHeader />
       <Routes location={backgroundLocation || location}>
-        <Route exact path="/" element={<HomePage />} />
-        <Route exact path="/profile" element={<OnlyAuth component={<ProfilePage />} />} />
-        <Route exact path="/register" element={<OnlyUnAuth component={<RegisterPage />} />} />
-        <Route exact path="/login" element={<OnlyUnAuth component={<LoginPage />} />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/profile" element={<OnlyAuth component={<ProfilePage />} />} />
+        <Route path="/register" element={<OnlyUnAuth component={<RegisterPage />} />} />
+        <Route path="/login" element={<OnlyUnAuth component={<LoginPage />} />} />
         <Route
-          exact
           path="/forgot-password"
           element={<OnlyUnAuth component={<ForgotPasswordPage />} />}
         />
         <Route
-          exact
           path="/reset-password/:token"
           element={<OnlyUnAuth component={<ResetPasswordPage />} />}
         />
-        <Route exact path="/ingredient/:id" element={<IngredientDetailsPage />} />
+        <Route path="/ingredient/:id" element={<IngredientDetailsPage />} />
       </Routes>
       {backgroundLocation && (
         <Routes>
           <Route
-            exact
             path="/ingredient/:id"
             element={
               <Modal onClose={() => navigate(-1)}>

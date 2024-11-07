@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { BurgerIngredients } from '../components/burger-ingredients/burger-ingredients';
 import { BurgerConstructor } from '../components/burger-constructor/burger-constructor';
 
-export const HomePage = () => {
+export const HomePage = (): React.JSX.Element => {
   return (
     <>
       <div className="container">
