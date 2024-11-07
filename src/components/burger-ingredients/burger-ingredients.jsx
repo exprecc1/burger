@@ -1,19 +1,16 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { BurgerIngredientsList } from './burger-ingredients-list/burger-ingredients-list';
 import { IngredientDetails } from './burger-ingredients-modal/ingredients-detail';
 import { Modal } from '../modal/modal';
 import { useModal } from '../../hooks/useModal';
-import { useLocation, useParams } from 'react-router-dom';
 import style from './burger-ingredients.module.css';
 
 export const BurgerIngredients = () => {
   const [current, setCurrent] = React.useState('one');
   const { currentIngredient, closeModal, openModal } = useModal();
   const { items, loading, error } = useSelector((state) => state.ingredientsAll);
-  const location = useLocation();
-  const { id } = useParams();
 
   // Фильтрация по категориям
   const [bun, sauce, stuff] = React.useMemo(() => {
