@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { IngredientType } from '../../../utils/types';
 import { BurgerIngredientsItem } from './burger-ingredient-item/burger-ingredient-item';
 import style from './burger-ingredients-list.module.css';
 
@@ -17,10 +16,4 @@ export const BurgerIngredientsList = ({ title, item, choiceItem }) => {
       </div>
     </>
   );
-};
-
-BurgerIngredientsList.propTypes = {
-  choiceItem: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
-  item: PropTypes.arrayOf(IngredientType.isRequired),
 };

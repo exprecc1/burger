@@ -1,7 +1,6 @@
 import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import PropTypes from 'prop-types';
-import { IngredientType } from '../../utils/types';
 import { useDispatch } from 'react-redux';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { removeIngredient } from '../../services/slices/constructor-list/slice';
@@ -51,10 +50,4 @@ export const DraggableIngredient = ({ item, index, moveIngredient }) => {
       />
     </div>
   );
-};
-
-DraggableIngredient.propTypes = {
-  item: IngredientType.isRequired,
-  index: PropTypes.number.isRequired,
-  moveIngredient: PropTypes.func.isRequired,
 };

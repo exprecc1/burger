@@ -1,9 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useDrag } from 'react-dnd';
 import { useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { IngredientType } from '../../../../utils/types';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './burger-ingredient-item.module.css';
 
@@ -52,8 +50,4 @@ export const BurgerIngredientsItem = ({ onClick, item }) => {
       </div>
     </div>
   );
-};
-
-BurgerIngredientsItem.propTypes = {
-  item: IngredientType.isRequired,
 };

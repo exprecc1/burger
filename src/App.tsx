@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { Route, Routes, useLocation, Location, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppHeader } from './components/app-header/app-header';
 import { HomePage } from './page/home';
@@ -17,20 +17,24 @@ import { fetchAllIngredients } from './services/slices/all-ingredients/slice';
 
 import './App.css';
 
-function App() {
+function App(): JSX.Element {
   const dispatch = useDispatch();
-  const location = useLocation();
-  const backgroundLocation = location.state?.backgroundLocation;
+  const location: Location = useLocation();
+  const backgroundLocation: string = location.state?.backgroundLocation;
   const navigate = useNavigate();
+  // @ts-ignore
   const { loading, error } = useSelector((state) => state.ingredientsAll);
 
   // Получение данных с api
   React.useEffect(() => {
+    // @ts-ignore
     dispatch(fetchAllIngredients());
   }, [dispatch]);
 
   React.useEffect(() => {
+    // @ts-ignore
     dispatch(checkUserAuth());
+    // @ts-ignore
     dispatch(fetchUser());
   }, [dispatch]);
 
