@@ -1,12 +1,28 @@
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { getIsAuthChecked, getUser } from '../services/slices/user/user';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation, Location } from 'react-router-dom';
+import { FunctionComponent } from 'react';
 
-const Protected = ({ onlyUnAuth = false, component }) => {
-  const user = useSelector(getUser);
-  const isAuthChecked = useSelector(getIsAuthChecked);
-  const location = useLocation();
+interface ProtectedProps {
+  onlyUnAuth?: boolean;
+  component: React.ReactNode;
+}
+
+interface ILocationState {
+  from?: string;
+}
+
+interface IUserData {
+  id: string;
+  name: string;
+  email: string;
+}
+
+const Protected: FunctionComponent<ProtectedProps> = ({ onlyUnAuth = false, component }) => {
+  const user: IUserData = useSelector(getUser);
+  const isAuthChecked: boolean = useSelector(getIsAuthChecked);
+  const location: Location<ILocationState> = useLocation();
 
   // url == /profile, onlyUnAuth = false, user = null
   // url == /login, from == /profile, onlyUnAuth == true, user = null
@@ -25,7 +41,7 @@ const Protected = ({ onlyUnAuth = false, component }) => {
 
   if (onlyUnAuth && user) {
     // для неавторизованных, но авторизован
-    const { from } = location.state || { from: { pathname: '/' } };
+    const from = location.state?.from || '/';
     return <Navigate to={from} />;
   }
 
@@ -35,18 +51,9 @@ const Protected = ({ onlyUnAuth = false, component }) => {
   return component;
 };
 
-export const OnlyAuth = ({ component }) => <Protected onlyUnAuth={false} component={component} />;
-export const OnlyUnAuth = ({ component }) => <Protected onlyUnAuth={true} component={component} />;
-
-Protected.propTypes = {
-  component: PropTypes.element.isRequired,
-  onlyUnAuth: PropTypes.bool.isRequired,
-};
-
-OnlyAuth.propTypes = {
-  component: PropTypes.element.isRequired,
-};
-
-OnlyUnAuth.propTypes = {
-  component: PropTypes.element.isRequired,
-};
+export const OnlyAuth: React.FC<{ component: React.ReactNode }> = ({ component }) => (
+  <Protected onlyUnAuth={false} component={component} />
+);
+export const OnlyUnAuth: React.FC<{ component: React.ReactNode }> = ({ component }) => (
+  <Protected onlyUnAuth={true} component={component} />
+);

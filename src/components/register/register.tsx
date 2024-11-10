@@ -1,31 +1,36 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { registerUser } from '../../services/slices/user/action';
 import style from './register.module.css';
 
-export const RegisterPage = () => {
+export const RegisterPage: FunctionComponent = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [email, setEmail] = React.useState('');
-  const [name, setName] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [email, setEmail] = React.useState<string>('');
+  const [name, setName] = React.useState<string>('');
+  const [password, setPassword] = React.useState<string>('');
+  const [showPassword, setShowPassword] = React.useState<boolean>(false);
 
-  const nameRef = React.useRef(null);
-  const emailRef = React.useRef(null);
-  const passwordRef = React.useRef(null);
+  const nameRef = React.useRef<HTMLInputElement | null>(null);
+  const emailRef = React.useRef<HTMLInputElement | null>(null);
+  const passwordRef = React.useRef<HTMLInputElement | null>(null);
 
   const onIconClick = () => {
     setShowPassword(!showPassword);
-    setTimeout(() => passwordRef.current.focus(), 0);
+    setTimeout(() => {
+      if (passwordRef.current) {
+        passwordRef.current.focus();
+      }
+    }, 0);
   };
 
-  const handleRegister = async (e) => {
+  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      //@ts-ignore
       await dispatch(registerUser({ name, email, password }));
       navigate('/');
     } catch (error) {
@@ -41,7 +46,7 @@ export const RegisterPage = () => {
           <Input
             type={'text'}
             placeholder={'Имя'}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
             value={name}
             name={'name'}
             error={false}
@@ -55,7 +60,7 @@ export const RegisterPage = () => {
           <Input
             type={'email'}
             placeholder={'E-mail'}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
             value={email}
             name={'email'}
             error={false}
@@ -69,7 +74,7 @@ export const RegisterPage = () => {
           <Input
             type={showPassword ? 'text' : 'password'}
             placeholder={'Пароль'}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
             icon={'ShowIcon'}
             value={password}
             name={'password'}

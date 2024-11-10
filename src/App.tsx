@@ -15,15 +15,28 @@ import { OnlyAuth, OnlyUnAuth } from './components/protected-route';
 import { checkUserAuth, fetchUser } from './services/slices/user/action';
 import { fetchAllIngredients } from './services/slices/all-ingredients/slice';
 
+import { Ingredient } from './utils/types';
+
 import './App.css';
+
+interface LocationState {
+  backgroundLocation: string;
+}
+
+interface IngredientChanges extends Ingredient {
+  loading: boolean;
+  error: string;
+}
 
 function App(): JSX.Element {
   const dispatch = useDispatch();
-  const location: Location = useLocation();
+  const location: Location<LocationState> = useLocation();
   const backgroundLocation: string = location.state?.backgroundLocation;
   const navigate = useNavigate();
-  // @ts-ignore
-  const { loading, error } = useSelector((state) => state.ingredientsAll);
+
+  const { loading, error } = useSelector(
+    (state: { ingredientsAll: IngredientChanges }) => state.ingredientsAll,
+  );
 
   // Получение данных с api
   React.useEffect(() => {

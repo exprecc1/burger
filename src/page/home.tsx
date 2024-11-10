@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { useLocation } from 'react-router-dom';
 import { BurgerIngredients } from '../components/burger-ingredients/burger-ingredients';
 import { BurgerConstructor } from '../components/burger-constructor/burger-constructor';
 
-export const HomePage = (): React.JSX.Element => {
+export const HomePage: FunctionComponent = () => {
   return (
     <>
       <div className="container">

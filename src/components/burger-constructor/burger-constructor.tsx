@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { useDrop } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -19,24 +19,27 @@ import { v4 as uuidv4 } from 'uuid';
 import style from './burger-constructor.module.css';
 import { DraggableIngredient } from './draggable-ingredient';
 import { useNavigate, useLocation, Location } from 'react-router-dom';
-import { Ingredient } from '../../utils/types';
+import { Ingredient, OrderState, UserState } from '../../utils/types';
 
-export const BurgerConstructor = () => {
-  interface DraggableIngredient extends Ingredient {
-    isInConstructor: boolean;
-    uuid: string;
-  }
+interface DraggableIngredient extends Ingredient {
+  isInConstructor: boolean;
+  uuid: string;
+}
 
+interface BurgerConstructorState {
+  ingredients: Ingredient[];
+}
+
+export const BurgerConstructor: FunctionComponent = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location: Location = useLocation();
-  //@ts-ignore
-  const ingredients: Ingredient[] = useSelector((state) => state.constructorList.ingredients);
-  //@ts-ignore
-  const user = useSelector((state) => state.user.user);
-  //@ts-ignore
-  const orderStatus = useSelector((state) => state.order.status);
+  const location: Location<string> = useLocation();
+  const ingredients: Ingredient[] = useSelector(
+    (state: { constructorList: BurgerConstructorState }) => state.constructorList.ingredients,
+  );
+  const user = useSelector((state: { user: UserState }) => state.user.user);
+  const orderStatus = useSelector((state: { order: OrderState }) => state.order.status);
 
   const bun = ingredients.filter((obj: Ingredient) => obj.type && obj.type.includes('bun'));
   const nonBunIngredients = ingredients.filter((obj: Ingredient) => obj.type && obj.type !== 'bun');

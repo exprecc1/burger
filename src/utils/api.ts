@@ -1,7 +1,36 @@
 import { BASE_URL } from './request';
+import { checkResponse } from './checkResponse';
+
+// Типы данных
+interface IUserData {
+  email: string;
+  password: string;
+  name?: string;
+}
+
+export interface ICredentials {
+  email: string;
+  password: string;
+}
+
+interface ITokenResponse {
+  accessToken: string;
+  refreshToken: string;
+}
+
+interface IUserResponse {
+  user: {
+    email: string;
+    name: string;
+  };
+}
+
+export interface IPasswordResetResponse {
+  message: string;
+}
 
 // Регистрация
-const register = async (userData) => {
+const register = async (userData: IUserData): Promise<ITokenResponse> => {
   const response = await fetch(`${BASE_URL}/auth/register`, {
     method: 'POST',
     headers: {
@@ -14,7 +43,7 @@ const register = async (userData) => {
     throw new Error('Registration failed');
   }
 
-  const data = await response.json();
+  const data: ITokenResponse = await response.json();
   localStorage.setItem('accessToken', data.accessToken);
   localStorage.setItem('refreshToken', data.refreshToken);
   startTokenRefreshInterval(); //Запуск таймера
@@ -22,7 +51,7 @@ const register = async (userData) => {
 };
 
 // Вход
-const login = async (credentials) => {
+const login = async (credentials: ICredentials): Promise<ITokenResponse> => {
   const response = await fetch(`${BASE_URL}/auth/login`, {
     method: 'POST',
     headers: {
@@ -35,7 +64,7 @@ const login = async (credentials) => {
     throw new Error('Login failed');
   }
 
-  const data = await response.json();
+  const data: ITokenResponse = await response.json();
   localStorage.setItem('accessToken', data.accessToken);
   localStorage.setItem('refreshToken', data.refreshToken);
   startTokenRefreshInterval(); //Запуск таймера
@@ -43,7 +72,7 @@ const login = async (credentials) => {
 };
 
 // Выход
-const logout = async () => {
+const logout = async (): Promise<void> => {
   const refreshToken = localStorage.getItem('refreshToken');
   if (!refreshToken) {
     throw new Error('No refresh token found');
@@ -63,10 +92,10 @@ const logout = async () => {
   localStorage.removeItem('accessToken');
   localStorage.removeItem('refreshToken');
   clearTokenRefreshInterval(); //очистка таймера
-  return;
 };
 
-const getUser = async () => {
+//Получение данных пользователя
+const getUser = async (): Promise<IUserResponse> => {
   const accessToken = localStorage.getItem('accessToken');
   if (!accessToken) {
     throw new Error('No access token found');
@@ -84,12 +113,12 @@ const getUser = async () => {
     throw new Error('Failed to fetch user data');
   }
 
-  const data = await response.json();
+  const data: IUserResponse = await response.json();
   return data;
 };
 
 // Обновление данных о пользователе
-const updateUser = async (userData) => {
+const updateUser = async (userData: IUserData): Promise<IUserResponse> => {
   const accessToken = localStorage.getItem('accessToken');
   if (!accessToken) {
     throw new Error('No access token found');
@@ -108,12 +137,12 @@ const updateUser = async (userData) => {
     throw new Error('Failed to update user data');
   }
 
-  const data = await response.json();
+  const data: IUserResponse = await response.json();
   return data;
 };
 
 // Обновление токенов
-const refreshToken = async () => {
+const refreshToken = async (): Promise<ITokenResponse> => {
   const refreshToken = localStorage.getItem('refreshToken');
   if (!refreshToken) {
     throw new Error('Токен для обновления не найден');
@@ -131,7 +160,7 @@ const refreshToken = async () => {
     throw new Error('Не удалось обновить токен');
   }
 
-  const data = await response.json();
+  const data: ITokenResponse = await response.json();
   localStorage.setItem('accessToken', data.accessToken);
   localStorage.setItem('refreshToken', data.refreshToken);
   resetTokenRefreshInterval();
@@ -139,7 +168,7 @@ const refreshToken = async () => {
 };
 
 // Восстановление пароля
-const forgotPassword = async (email) => {
+const forgotPassword = async (email: string): Promise<IPasswordResetResponse> => {
   const response = await fetch(`${BASE_URL}/password-reset`, {
     method: 'POST',
     headers: {
@@ -152,12 +181,12 @@ const forgotPassword = async (email) => {
     throw new Error('Failed to send reset email');
   }
 
-  const data = await response.json();
+  const data: IPasswordResetResponse = await response.json();
   return data;
 };
 
 // Сброс пароля
-const resetPassword = async (password, token) => {
+const resetPassword = async (password: string, token: string): Promise<IPasswordResetResponse> => {
   const response = await fetch(`${BASE_URL}/password-reset/reset`, {
     method: 'POST',
     headers: {
@@ -171,12 +200,12 @@ const resetPassword = async (password, token) => {
     throw new Error('Failed to reset password');
   }
 
-  const data = await response.json();
+  const data: IPasswordResetResponse = await response.json();
   return data;
 };
 
 // Обновление токенов каждые 20 минут
-let tokenRefreshInterval;
+let tokenRefreshInterval: number;
 
 const startTokenRefreshInterval = () => {
   tokenRefreshInterval = setInterval(async () => {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 import {
   BurgerIcon,
@@ -11,7 +11,7 @@ import { getUser, getIsAuthChecked } from '../../services/slices/user/user';
 
 import style from './app-header.module.css';
 
-export const AppHeader = (): React.JSX.Element => {
+export const AppHeader: FunctionComponent = () => {
   const user = useSelector(getUser);
   const isAuthChecked = useSelector(getIsAuthChecked);
 

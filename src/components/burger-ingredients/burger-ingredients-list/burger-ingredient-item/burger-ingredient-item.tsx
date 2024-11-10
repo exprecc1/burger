@@ -1,13 +1,25 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { useDrag } from 'react-dnd';
 import { useSelector } from 'react-redux';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, Location } from 'react-router-dom';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Ingredient } from '../../../../utils/types';
 import style from './burger-ingredient-item.module.css';
 
-export const BurgerIngredientsItem = ({ onClick, item }) => {
+interface BurgerIngredientsItemProps {
+  item: Ingredient;
+}
+
+interface IConstructorList {
+  constructorList: {
+    ingredients: Ingredient[];
+  };
+}
+
+export const BurgerIngredientsItem: FunctionComponent<BurgerIngredientsItemProps> = ({ item }) => {
   const dragType = item.type === 'bun' ? 'bun' : 'ingredient';
   const navigate = useNavigate();
+  const location: Location<string> = useLocation();
 
   const [{ isDragging }, drag] = useDrag({
     type: dragType,
@@ -17,7 +29,7 @@ export const BurgerIngredientsItem = ({ onClick, item }) => {
     }),
   });
 
-  const ingredients = useSelector((state) => state.constructorList.ingredients);
+  const ingredients = useSelector((state: IConstructorList) => state.constructorList.ingredients);
 
   const count = React.useMemo(() => {
     if (item.type === 'bun') {
@@ -26,8 +38,6 @@ export const BurgerIngredientsItem = ({ onClick, item }) => {
       return ingredients.filter((ingredient) => ingredient._id === item._id).length;
     }
   }, [ingredients, item._id, item.type]);
-
-  const location = useLocation();
 
   const handleClick = () => {
     navigate(`/ingredient/${item._id}`, { state: { backgroundLocation: location } });
@@ -43,7 +53,7 @@ export const BurgerIngredientsItem = ({ onClick, item }) => {
       {count > 0 ? <Counter count={count} size="default" extraClass="m-1" /> : null}
       <img src={item.image} alt={item.name} />
       <p>
-        {item.price} <CurrencyIcon />
+        {item.price} <CurrencyIcon type="primary" />
       </p>
       <div className={style.ingredients__footer}>
         <p>{item.name}</p>

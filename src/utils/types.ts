@@ -13,3 +13,14 @@ export interface Ingredient {
   __v?: number;
   uuid?: string;
 }
+
+export interface UserState {
+  user: {
+    name: string;
+    email: string;
+  } | null;
+}
+
+export interface OrderState {
+  status: string;
+}

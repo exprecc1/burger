@@ -1,29 +1,38 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import style from './login.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation, Location } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { login } from '../../services/slices/user/action';
 
-export const LoginPage = () => {
+interface ILocation {
+  from?: string;
+}
+
+export const LoginPage: FunctionComponent = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const location = useLocation();
+  const location: Location<ILocation> = useLocation();
 
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [showPassword, setShowPassword] = React.useState(false);
-  const emailRef = React.useRef(null);
-  const passwordRef = React.useRef(null);
+  const [email, setEmail] = React.useState<string>('');
+  const [password, setPassword] = React.useState<string>('');
+  const [showPassword, setShowPassword] = React.useState<boolean>(false);
+  const emailRef = React.useRef<HTMLInputElement | null>(null);
+  const passwordRef = React.useRef<HTMLInputElement | null>(null);
 
   const onIconClick = () => {
     setShowPassword(!showPassword);
-    setTimeout(() => passwordRef.current.focus(), 0);
+    setTimeout(() => {
+      if (passwordRef.current) {
+        passwordRef.current.focus();
+      }
+    }, 0);
   };
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      //@ts-ignore
       await dispatch(login({ email, password }));
       const from = location.state?.from || '/';
       navigate(from, { replace: true });
