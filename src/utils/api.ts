@@ -39,11 +39,7 @@ const register = async (userData: IUserData): Promise<ITokenResponse> => {
     body: JSON.stringify(userData),
   });
 
-  if (!response.ok) {
-    throw new Error('Registration failed');
-  }
-
-  const data: ITokenResponse = await response.json();
+  const data = await checkResponse(response);
   localStorage.setItem('accessToken', data.accessToken);
   localStorage.setItem('refreshToken', data.refreshToken);
   startTokenRefreshInterval(); //Запуск таймера
@@ -60,11 +56,7 @@ const login = async (credentials: ICredentials): Promise<ITokenResponse> => {
     body: JSON.stringify(credentials),
   });
 
-  if (!response.ok) {
-    throw new Error('Login failed');
-  }
-
-  const data: ITokenResponse = await response.json();
+  const data = await checkResponse(response);
   localStorage.setItem('accessToken', data.accessToken);
   localStorage.setItem('refreshToken', data.refreshToken);
   startTokenRefreshInterval(); //Запуск таймера
@@ -86,9 +78,7 @@ const logout = async (): Promise<void> => {
     body: JSON.stringify({ token: refreshToken }),
   });
 
-  if (!response.ok) {
-    throw new Error('Logout failed');
-  }
+  await checkResponse(response);
   localStorage.removeItem('accessToken');
   localStorage.removeItem('refreshToken');
   clearTokenRefreshInterval(); //очистка таймера
@@ -109,12 +99,7 @@ const getUser = async (): Promise<IUserResponse> => {
     },
   });
 
-  if (!response.ok) {
-    throw new Error('Failed to fetch user data');
-  }
-
-  const data: IUserResponse = await response.json();
-  return data;
+  return await checkResponse(response);
 };
 
 // Обновление данных о пользователе
@@ -133,12 +118,7 @@ const updateUser = async (userData: IUserData): Promise<IUserResponse> => {
     body: JSON.stringify(userData),
   });
 
-  if (!response.ok) {
-    throw new Error('Failed to update user data');
-  }
-
-  const data: IUserResponse = await response.json();
-  return data;
+  return await checkResponse(response);
 };
 
 // Обновление токенов
@@ -156,11 +136,7 @@ const refreshToken = async (): Promise<ITokenResponse> => {
     body: JSON.stringify({ token: refreshToken }),
   });
 
-  if (!response.ok) {
-    throw new Error('Не удалось обновить токен');
-  }
-
-  const data: ITokenResponse = await response.json();
+  const data = await checkResponse(response);
   localStorage.setItem('accessToken', data.accessToken);
   localStorage.setItem('refreshToken', data.refreshToken);
   resetTokenRefreshInterval();
@@ -177,12 +153,7 @@ const forgotPassword = async (email: string): Promise<IPasswordResetResponse> =>
     body: JSON.stringify({ email }),
   });
 
-  if (!response.ok) {
-    throw new Error('Failed to send reset email');
-  }
-
-  const data: IPasswordResetResponse = await response.json();
-  return data;
+  return await checkResponse(response);
 };
 
 // Сброс пароля
@@ -196,12 +167,7 @@ const resetPassword = async (password: string, token: string): Promise<IPassword
     body: JSON.stringify({ password, token }),
   });
 
-  if (!response.ok) {
-    throw new Error('Failed to reset password');
-  }
-
-  const data: IPasswordResetResponse = await response.json();
-  return data;
+  return await checkResponse(response);
 };
 
 // Обновление токенов каждые 20 минут
