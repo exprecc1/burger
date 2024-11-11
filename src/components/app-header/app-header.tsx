@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 import {
   BurgerIcon,
@@ -6,12 +6,12 @@ import {
   Logo,
   ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { getUser, getIsAuthChecked } from '../../services/slices/user/user';
-import { checkUserAuth } from '../../services/slices/user/action';
+
 import style from './app-header.module.css';
 
-export const AppHeader = () => {
+export const AppHeader: FunctionComponent = () => {
   const user = useSelector(getUser);
   const isAuthChecked = useSelector(getIsAuthChecked);
 

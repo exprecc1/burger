@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { useSelector } from 'react-redux';
 import style from './burger-constructor-modal.module.css';
 import done from '../../../image/done.png';
+import { OrderState } from '../../../utils/types';
 
-export const OrderDetails = () => {
-  const { orderNumber, status, error } = useSelector((state) => state.order);
+interface Order extends OrderState {
+  orderNumber: number;
+  error: string;
+  status: 'loading' | 'failed' | 'succeeded';
+}
+
+export const OrderDetails: FunctionComponent = () => {
+  const { orderNumber, status, error } = useSelector((state: { order: Order }) => state.order);
   console.log(orderNumber, status, error);
 
   if (status === 'loading') {

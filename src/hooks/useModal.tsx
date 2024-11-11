@@ -1,21 +1,28 @@
 import React from 'react';
 import { viewIngredient, removeViewIngredient } from '../services/slices/current-ingredient/slice';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { useNavigate, useLocation, Location } from 'react-router-dom';
 import { clearIngredients } from '../services/slices/constructor-list/slice';
 import { useDispatch, useSelector } from 'react-redux';
+import { Ingredient, UserState, OrderState } from '../utils/types';
+
+interface currentIngredient extends Ingredient {
+  currentIngredient?: Ingredient;
+}
 
 export const useModal = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+  const location: Location<string> = useLocation();
   const dispatch = useDispatch();
-  const { currentIngredient } = useSelector((state) => state.currentIngredient);
-  const { user } = useSelector((state) => state.user);
-  const { items } = useSelector((state) => state.ingredientsAll);
-  const orderStatus = useSelector((state) => state.order.status);
-  const [isModal, setIsModal] = React.useState(false);
+  const { currentIngredient } = useSelector(
+    (state: { currentIngredient: currentIngredient }) => state.currentIngredient,
+  );
+  const { user } = useSelector((state: { user: UserState }) => state.user);
+  const orderStatus = useSelector((state: { order: OrderState }) => state.order.status);
+
+  const [isModal, setIsModal] = React.useState<boolean>(false);
 
   const openModal = React.useCallback(
-    (item) => {
+    (item: Ingredient) => {
       if (item) {
         dispatch(viewIngredient(item));
         navigate(`/ingredient/${item._id}`, {

@@ -1,7 +1,7 @@
 import { checkResponse } from './checkResponse';
 export const BASE_URL = 'https://norma.nomoreparties.space/api';
 
-export function request(endpoint, options = {}) {
+export function request(endpoint: string, options: RequestInit = {}): Promise<any> {
   const url = `${BASE_URL}${endpoint}`;
   return fetch(url, options).then(checkResponse);
 }

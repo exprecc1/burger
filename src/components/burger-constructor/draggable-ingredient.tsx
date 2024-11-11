@@ -1,13 +1,28 @@
-import React from 'react';
-import { useDrag, useDrop } from 'react-dnd';
-import PropTypes from 'prop-types';
-import { IngredientType } from '../../utils/types';
+import React, { FunctionComponent } from 'react';
+import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd';
 import { useDispatch } from 'react-redux';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { removeIngredient } from '../../services/slices/constructor-list/slice';
+import { Ingredient } from '../../utils/types';
 import style from './burger-constructor.module.css';
 
-export const DraggableIngredient = ({ item, index, moveIngredient }) => {
+interface DraggableIngredientProps {
+  item: Ingredient;
+  index: number;
+  moveIngredient: (dragIndex: number, hoverIndex: number) => void;
+}
+
+interface DragItem {
+  index: number;
+  isInConstructor: boolean;
+  uuid: string;
+}
+
+export const DraggableIngredient: FunctionComponent<DraggableIngredientProps> = ({
+  item,
+  index,
+  moveIngredient,
+}) => {
   const dispatch = useDispatch();
 
   const [{ isDragging }, drag] = useDrag({
@@ -18,9 +33,12 @@ export const DraggableIngredient = ({ item, index, moveIngredient }) => {
     }),
   });
 
-  const [, drop] = useDrop({
+  const [, drop] = useDrop<DragItem, void>({
     accept: 'ingredient',
-    hover: (item, monitor) => {
+    hover: (
+      item: { index: number; isInConstructor: boolean },
+      monitor: DropTargetMonitor<DragItem, void>,
+    ) => {
       if (!monitor.isOver({ shallow: true })) return;
 
       const dragIndex = item.index;
@@ -32,7 +50,7 @@ export const DraggableIngredient = ({ item, index, moveIngredient }) => {
     },
   });
 
-  const handleRemoveIngredient = (uuid) => dispatch(removeIngredient({ uuid }));
+  const handleRemoveIngredient = (uuid: string) => dispatch(removeIngredient({ uuid }));
 
   return (
     <div
@@ -42,19 +60,13 @@ export const DraggableIngredient = ({ item, index, moveIngredient }) => {
     >
       <DragIcon type="primary" className="pl-0 pr-2 pb-0 pt-0" />
       <ConstructorElement
-        type="undefined"
+        type={undefined}
         isLocked={false}
         text={item.name}
         price={item.price}
         thumbnail={item.image}
-        handleClose={() => handleRemoveIngredient(item.uuid)}
+        handleClose={() => (item.uuid ? handleRemoveIngredient(item.uuid) : undefined)}
       />
     </div>
   );
-};
-
-DraggableIngredient.propTypes = {
-  item: IngredientType.isRequired,
-  index: PropTypes.number.isRequired,
-  moveIngredient: PropTypes.func.isRequired,
 };

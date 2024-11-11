@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { useDrop } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -18,21 +18,33 @@ import { submitOrder } from '../../services/slices/order-details/slice';
 import { v4 as uuidv4 } from 'uuid';
 import style from './burger-constructor.module.css';
 import { DraggableIngredient } from './draggable-ingredient';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Location } from 'react-router-dom';
+import { Ingredient, OrderState, UserState } from '../../utils/types';
 
-export const BurgerConstructor = () => {
+interface DraggableIngredient extends Ingredient {
+  isInConstructor: boolean;
+  uuid: string;
+}
+
+interface BurgerConstructorState {
+  ingredients: Ingredient[];
+}
+
+export const BurgerConstructor: FunctionComponent = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
-  const ingredients = useSelector((state) => state.constructorList.ingredients);
-  const user = useSelector((state) => state.user.user);
-  const orderStatus = useSelector((state) => state.order.status);
+  const location: Location<string> = useLocation();
+  const ingredients: Ingredient[] = useSelector(
+    (state: { constructorList: BurgerConstructorState }) => state.constructorList.ingredients,
+  );
+  const user = useSelector((state: { user: UserState }) => state.user.user);
+  const orderStatus = useSelector((state: { order: OrderState }) => state.order.status);
 
-  const bun = ingredients.filter((obj) => obj.type && obj.type.includes('bun'));
-  const nonBunIngredients = ingredients.filter((obj) => obj.type && obj.type !== 'bun');
+  const bun = ingredients.filter((obj: Ingredient) => obj.type && obj.type.includes('bun'));
+  const nonBunIngredients = ingredients.filter((obj: Ingredient) => obj.type && obj.type !== 'bun');
 
-  const handleDrop = (item) => {
+  const handleDrop = (item: Ingredient) => {
     const newItem = { ...item, uuid: uuidv4() };
     dispatch(addIngredient(newItem));
   };
@@ -50,7 +62,7 @@ export const BurgerConstructor = () => {
 
   const [{ isOver: isOverBunTop }, dropBunTop] = useDrop({
     accept: 'bun',
-    drop: (item) => {
+    drop: (item: DraggableIngredient) => {
       if (item.type === 'bun' && !item.isInConstructor) {
         handleDrop(item);
       }
@@ -62,7 +74,7 @@ export const BurgerConstructor = () => {
 
   const [{ isOver: isOverBunBottom }, dropBunBottom] = useDrop({
     accept: 'bun',
-    drop: (item) => {
+    drop: (item: DraggableIngredient) => {
       if (item.type === 'bun' && !item.isInConstructor) {
         handleDrop(item);
       }
@@ -74,7 +86,7 @@ export const BurgerConstructor = () => {
 
   const [{ isOver: isOverIngredients }, dropIngredients] = useDrop({
     accept: 'ingredient',
-    drop: (item) => {
+    drop: (item: DraggableIngredient) => {
       if (item.type !== 'bun' && !item.isInConstructor) {
         handleDrop(item);
       }
@@ -97,13 +109,14 @@ export const BurgerConstructor = () => {
 
     console.log(user);
 
-    const ingredientIds = ingredients.map((ingredient) => ingredient._id);
+    const ingredientIds = ingredients.map((ingredient: Ingredient) => ingredient._id);
+    //@ts-ignore
     dispatch(submitOrder(ingredientIds));
     setIsOpen(true);
   };
 
   const moveIngredient = React.useCallback(
-    (dragIndex, hoverIndex) => {
+    (dragIndex: number, hoverIndex: number) => {
       const updatedIngredients = [...nonBunIngredients];
       const [draggedIngredient] = updatedIngredients.splice(dragIndex, 1);
       updatedIngredients.splice(hoverIndex, 0, draggedIngredient);

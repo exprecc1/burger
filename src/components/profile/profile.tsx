@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,21 +6,28 @@ import { getUser } from '../../services/slices/user/user';
 import { logout, fetchUser, updateUser } from '../../services/slices/user/action';
 import style from './profile.module.css';
 
-export const ProfilePage = () => {
+interface IUserInfo {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export const ProfilePage: FunctionComponent = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector(getUser);
+  const user: IUserInfo = useSelector(getUser);
 
-  const [name, setName] = React.useState(user?.name || '');
-  const [email, setEmail] = React.useState(user?.email || '');
-  const [password, setPassword] = React.useState('');
-  const [showPassword, setShowPassword] = React.useState(false);
-  const [showButton, setShowButton] = React.useState(false);
+  const [name, setName] = React.useState<string>(user?.name || '');
+  const [email, setEmail] = React.useState<string>(user?.email || '');
+  const [password, setPassword] = React.useState<string>('');
+  const [showPassword, setShowPassword] = React.useState<boolean>(false);
+  const [showButton, setShowButton] = React.useState<boolean>(false);
 
-  const emailRef = React.useRef(null);
-  const passwordRef = React.useRef(null);
+  const emailRef = React.useRef<HTMLInputElement | null>(null);
+  const passwordRef = React.useRef<HTMLInputElement | null>(null);
 
   React.useEffect(() => {
+    //@ts-ignore
     dispatch(fetchUser());
   }, [dispatch]);
 
@@ -31,16 +38,24 @@ export const ProfilePage = () => {
 
   const onIconClick = () => {
     setShowPassword(!showPassword);
-    setTimeout(() => passwordRef.current.focus(), 0);
+    setTimeout(() => {
+      if (passwordRef.current) {
+        passwordRef.current.focus();
+      }
+    }, 0);
   };
 
-  const handleInputChange = (e, setValue) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setValue: React.Dispatch<React.SetStateAction<string>>,
+  ) => {
     setValue(e.target.value);
     setShowButton(true);
   };
 
   const handleLogout = async () => {
     try {
+      //@ts-ignore
       await dispatch(logout());
       navigate('/login');
     } catch (error) {
@@ -48,9 +63,10 @@ export const ProfilePage = () => {
     }
   };
 
-  const handleSave = async (e) => {
+  const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      //@ts-ignore
       await dispatch(updateUser({ name, email, password }));
       setShowButton(false);
       alert('Данные успешно обновлены');
@@ -145,13 +161,7 @@ export const ProfilePage = () => {
               <span onClick={handleCancel} className={style.cancel}>
                 Отмена
               </span>
-              <Button
-                onClick={handleSave}
-                htmlType="button"
-                type="primary"
-                size="small"
-                extraClass="ml-2"
-              >
+              <Button htmlType="submit" type="primary" size="small" extraClass="ml-2">
                 Сохранить
               </Button>
             </div>

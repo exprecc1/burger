@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { Route, Routes, useLocation, Location, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppHeader } from './components/app-header/app-header';
 import { HomePage } from './page/home';
@@ -15,22 +15,39 @@ import { OnlyAuth, OnlyUnAuth } from './components/protected-route';
 import { checkUserAuth, fetchUser } from './services/slices/user/action';
 import { fetchAllIngredients } from './services/slices/all-ingredients/slice';
 
+import { Ingredient } from './utils/types';
+
 import './App.css';
 
-function App() {
+interface LocationState {
+  backgroundLocation: string;
+}
+
+interface IngredientChanges extends Ingredient {
+  loading: boolean;
+  error: string;
+}
+
+function App(): JSX.Element {
   const dispatch = useDispatch();
-  const location = useLocation();
-  const backgroundLocation = location.state?.backgroundLocation;
+  const location: Location<LocationState> = useLocation();
+  const backgroundLocation: string = location.state?.backgroundLocation;
   const navigate = useNavigate();
-  const { loading, error } = useSelector((state) => state.ingredientsAll);
+
+  const { loading, error } = useSelector(
+    (state: { ingredientsAll: IngredientChanges }) => state.ingredientsAll,
+  );
 
   // Получение данных с api
   React.useEffect(() => {
+    // @ts-ignore
     dispatch(fetchAllIngredients());
   }, [dispatch]);
 
   React.useEffect(() => {
+    // @ts-ignore
     dispatch(checkUserAuth());
+    // @ts-ignore
     dispatch(fetchUser());
   }, [dispatch]);
 
@@ -46,26 +63,23 @@ function App() {
     <>
       <AppHeader />
       <Routes location={backgroundLocation || location}>
-        <Route exact path="/" element={<HomePage />} />
-        <Route exact path="/profile" element={<OnlyAuth component={<ProfilePage />} />} />
-        <Route exact path="/register" element={<OnlyUnAuth component={<RegisterPage />} />} />
-        <Route exact path="/login" element={<OnlyUnAuth component={<LoginPage />} />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/profile" element={<OnlyAuth component={<ProfilePage />} />} />
+        <Route path="/register" element={<OnlyUnAuth component={<RegisterPage />} />} />
+        <Route path="/login" element={<OnlyUnAuth component={<LoginPage />} />} />
         <Route
-          exact
           path="/forgot-password"
           element={<OnlyUnAuth component={<ForgotPasswordPage />} />}
         />
         <Route
-          exact
           path="/reset-password/:token"
           element={<OnlyUnAuth component={<ResetPasswordPage />} />}
         />
-        <Route exact path="/ingredient/:id" element={<IngredientDetailsPage />} />
+        <Route path="/ingredient/:id" element={<IngredientDetailsPage />} />
       </Routes>
       {backgroundLocation && (
         <Routes>
           <Route
-            exact
             path="/ingredient/:id"
             element={
               <Modal onClose={() => navigate(-1)}>
