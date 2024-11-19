@@ -1,6 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Ingredient } from '../../../utils/types';
 
-const initialState = {
+interface constructorListState {
+  ingredients: Ingredient[];
+  ingredientCounts: Record<string, number>;
+}
+
+const initialState: constructorListState = {
   ingredients: [],
   ingredientCounts: {},
 };
@@ -9,7 +15,7 @@ const constructorListSlice = createSlice({
   name: 'constructorList',
   initialState,
   reducers: {
-    addIngredient: (state, action) => {
+    addIngredient: (state, action: PayloadAction<Ingredient>) => {
       const { type, uuid } = action.payload;
       if (type === 'bun') {
         // Удаляем старую булку, если она есть
@@ -21,7 +27,7 @@ const constructorListSlice = createSlice({
         state.ingredients.push({ ...action.payload, uuid });
       }
     },
-    removeIngredient: (state, action) => {
+    removeIngredient: (state, action: PayloadAction<Ingredient>) => {
       const { uuid } = action.payload;
       const index = state.ingredients.findIndex((ingredient) => ingredient.uuid === uuid);
       if (index !== -1) {
@@ -31,7 +37,7 @@ const constructorListSlice = createSlice({
     clearIngredients: (state) => {
       state.ingredients = [];
     },
-    updateIngredientsOrder: (state, action) => {
+    updateIngredientsOrder: (state, action: PayloadAction<Ingredient[]>) => {
       state.ingredients = action.payload;
     },
   },

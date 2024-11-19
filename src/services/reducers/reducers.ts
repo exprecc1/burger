@@ -12,5 +12,7 @@ const rootReducer = combineReducers({
   currentIngredient: currentIngredientReducer,
   order: orderReducer,
 });
+// Типизация для RootState
+export type RootState = ReturnType<typeof rootReducer>;
 
 export default rootReducer;
