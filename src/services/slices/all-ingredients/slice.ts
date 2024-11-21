@@ -2,7 +2,7 @@ import { Ingredient } from './../../../utils/types';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { request } from '../../../utils/request';
 
-interface IngredientState {
+export interface IngredientState {
   items: Ingredient[];
   status: 'loading' | 'success' | 'failed';
   error: string | null;

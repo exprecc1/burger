@@ -3,6 +3,7 @@ import { Route, Routes, useLocation, Location, useNavigate } from 'react-router-
 import { useDispatch, useSelector } from 'react-redux';
 import { AppHeader } from './components/app-header/app-header';
 import { HomePage } from './page/home';
+import { FeedPage } from './page/feed';
 import { Modal } from './components/modal/modal';
 import { LoginPage } from './components/login/login';
 import { RegisterPage } from './components/register/register';
@@ -64,6 +65,7 @@ function App(): JSX.Element {
       <AppHeader />
       <Routes location={backgroundLocation || location}>
         <Route path="/" element={<HomePage />} />
+        <Route path="/feed" element={<FeedPage />} />
         <Route path="/profile" element={<OnlyAuth component={<ProfilePage />} />} />
         <Route path="/register" element={<OnlyUnAuth component={<RegisterPage />} />} />
         <Route path="/login" element={<OnlyUnAuth component={<LoginPage />} />} />

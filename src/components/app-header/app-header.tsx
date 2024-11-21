@@ -27,10 +27,10 @@ export const AppHeader: FunctionComponent = () => {
               </Link>
             </div>
             <div className={style.tape}>
-              <a href="#">
+              <Link to="/feed">
                 <ListIcon type="secondary" />
                 <span>Лента заказов</span>
-              </a>
+              </Link>
             </div>
           </div>
           <div className={style.header_logo}>
