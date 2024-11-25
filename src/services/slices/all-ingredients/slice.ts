@@ -22,7 +22,7 @@ export const fetchAllIngredients = createAsyncThunk<Ingredient[], void, {}>(
   },
 );
 
-const ingredientsAllSlice = createSlice({
+export const ingredientsAllSlice = createSlice({
   name: 'ingredientsAll',
   initialState,
   reducers: {
@@ -47,4 +47,3 @@ const ingredientsAllSlice = createSlice({
 });
 
 export const { setIngredients } = ingredientsAllSlice.actions;
-export default ingredientsAllSlice.reducer;

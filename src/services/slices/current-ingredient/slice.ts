@@ -22,7 +22,7 @@ export const fetchIngredientById = createAsyncThunk<Ingredient, string>(
   },
 );
 
-const currentIngredientSlice = createSlice({
+export const currentIngredientSlice = createSlice({
   name: 'currentIngredient',
   initialState,
   reducers: {

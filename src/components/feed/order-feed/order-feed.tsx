@@ -1,216 +1,69 @@
 import React from 'react';
 import style from './order-feed.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector } from 'react-redux';
-import { IngredientState } from '../../../services/slices/all-ingredients/slice';
+import { useSelector } from '../../../services/store';
+import { getOrders } from '../../../services/slices/order-feed/slice';
 
 export const FeedOrder: React.FC = () => {
-  const today = new Date();
-  const ingredients = useSelector(
-    (state: { ingredientsAll: IngredientState }) => state.ingredientsAll.items,
-  );
-  const ingredient = ingredients[0];
+  const orders = useSelector(getOrders);
+  const { total, totalToday } = useSelector((state) => state.OrderFeed);
+  const { items } = useSelector((state) => state.ingredientsAll);
+
+  // Выбор первых 10 заказов
+
+  const ingredientsMap = items.reduce((acc, ingredient) => {
+    acc[ingredient._id] = ingredient;
+    return acc;
+  }, {});
+
+  const firstTenOrders = orders.slice(0, 10);
 
   return (
-    <>
-      <div className={style.feed__container}>
-        <div className={style.feed__block}>
+    <div className={style.feed__container}>
+      {firstTenOrders.map((order) => (
+        <div key={order._id} className={style.feed__block}>
           <div className={style.order__data}>
             <div className={style.order__num}>
-              <p className="text text_type_digits-default">#1232352</p>
+              <p className="text text_type_digits-default">#{order.number}</p>
             </div>
             <div className={style.order__date}>
-              <FormattedDate
-                date={
-                  new Date(
-                    today.getFullYear(),
-                    today.getMonth(),
-                    today.getDate(),
-                    today.getHours(),
-                    today.getMinutes() - 1,
-                    0,
-                  )
-                }
-              />
+              <FormattedDate date={new Date(order.createdAt)} />
             </div>
           </div>
           <div className={style.order__title}>
-            <p>Качественный бургер</p>
+            <p>{order.name}</p>
           </div>
           <div className={style.order__box}>
             <div className={style.order__ingredient}>
               <div className={style.order__item}>
-                <div className={style.image__wrapper}>
-                  <img src={ingredient.image} alt="Ingredient 1" />
-                </div>
-                <div className={style.image__wrapper}>
-                  <img src={ingredient.image} alt="Ingredient 2" />
-                </div>
-                <div className={style.image__wrapper}>
-                  <img src={ingredient.image} alt="Ingredient 3" />
-                </div>
-                <div className={style.image__wrapper}>
-                  <img src={ingredient.image} alt="Ingredient 4" />
-                </div>
-                <div className={style.image__wrapper}>
-                  <img src={ingredient.image} alt="Ingredient 4" />
-                </div>
+                {order.ingredients.slice(0, 5).map((ingredientId, index) => {
+                  const ingredient = ingredientsMap[ingredientId];
+                  if (!ingredient) return null;
+                  return (
+                    <div key={index} className={style.image__wrapper}>
+                      <img src={ingredient.image} alt={`Ingredient ${index + 1}`} />
+                    </div>
+                  );
+                })}
+                {order.ingredients.length > 5 && (
+                  <div className={style.image__wrapper}>
+                    <p className="text text_type_main-default">+{order.ingredients.length - 5}</p>
+                  </div>
+                )}
               </div>
             </div>
             <div className={style.order__price}>
-              <p>10</p>
+              <p className="text text_type_digits-default">
+                {order.ingredients.reduce((total, ingredientId) => {
+                  const ingredient = ingredientsMap[ingredientId];
+                  return total + (ingredient?.price || 0);
+                }, 0)}
+              </p>
               <CurrencyIcon type="primary" />
             </div>
           </div>
         </div>
-        <div className={style.feed__block}>
-          <div className={style.order__data}>
-            <div className={style.order__num}>
-              <p className="text text_type_digits-default">#1232352</p>
-            </div>
-            <div className={style.order__date}>
-              <FormattedDate
-                date={
-                  new Date(
-                    today.getFullYear(),
-                    today.getMonth(),
-                    today.getDate(),
-                    today.getHours(),
-                    today.getMinutes() - 1,
-                    0,
-                  )
-                }
-              />
-            </div>
-          </div>
-          <div className={style.order__title}>
-            <p>Качественный бургер</p>
-          </div>
-          <div className={style.order__box}>
-            <div className={style.order__ingredient}>
-              <div className={style.order__item}>
-                <div className={style.image__wrapper}>
-                  <img src={ingredient.image} alt="Ingredient 1" />
-                </div>
-                <div className={style.image__wrapper}>
-                  <img src={ingredient.image} alt="Ingredient 2" />
-                </div>
-                <div className={style.image__wrapper}>
-                  <img src={ingredient.image} alt="Ingredient 3" />
-                </div>
-                <div className={style.image__wrapper}>
-                  <img src={ingredient.image} alt="Ingredient 4" />
-                </div>
-                <div className={style.image__wrapper}>
-                  <img src={ingredient.image} alt="Ingredient 4" />
-                </div>
-              </div>
-            </div>
-            <div className={style.order__price}>
-              <p>10</p>
-              <CurrencyIcon type="primary" />
-            </div>
-          </div>
-        </div>
-        <div className={style.feed__block}>
-          <div className={style.order__data}>
-            <div className={style.order__num}>
-              <p className="text text_type_digits-default">#1232352</p>
-            </div>
-            <div className={style.order__date}>
-              <FormattedDate
-                date={
-                  new Date(
-                    today.getFullYear(),
-                    today.getMonth(),
-                    today.getDate(),
-                    today.getHours(),
-                    today.getMinutes() - 1,
-                    0,
-                  )
-                }
-              />
-            </div>
-          </div>
-          <div className={style.order__title}>
-            <p>Качественный бургер</p>
-          </div>
-          <div className={style.order__box}>
-            <div className={style.order__ingredient}>
-              <div className={style.order__item}>
-                <div className={style.image__wrapper}>
-                  <img src={ingredient.image} alt="Ingredient 1" />
-                </div>
-                <div className={style.image__wrapper}>
-                  <img src={ingredient.image} alt="Ingredient 2" />
-                </div>
-                <div className={style.image__wrapper}>
-                  <img src={ingredient.image} alt="Ingredient 3" />
-                </div>
-                <div className={style.image__wrapper}>
-                  <img src={ingredient.image} alt="Ingredient 4" />
-                </div>
-                <div className={style.image__wrapper}>
-                  <img src={ingredient.image} alt="Ingredient 4" />
-                </div>
-              </div>
-            </div>
-            <div className={style.order__price}>
-              <p>10</p>
-              <CurrencyIcon type="primary" />
-            </div>
-          </div>
-        </div>
-        <div className={style.feed__block}>
-          <div className={style.order__data}>
-            <div className={style.order__num}>
-              <p className="text text_type_digits-default">#1232352</p>
-            </div>
-            <div className={style.order__date}>
-              <FormattedDate
-                date={
-                  new Date(
-                    today.getFullYear(),
-                    today.getMonth(),
-                    today.getDate(),
-                    today.getHours(),
-                    today.getMinutes() - 1,
-                    0,
-                  )
-                }
-              />
-            </div>
-          </div>
-          <div className={style.order__title}>
-            <p>Качественный бургер</p>
-          </div>
-          <div className={style.order__box}>
-            <div className={style.order__ingredient}>
-              <div className={style.order__item}>
-                <div className={style.image__wrapper}>
-                  <img src={ingredient.image} alt="Ingredient 1" />
-                </div>
-                <div className={style.image__wrapper}>
-                  <img src={ingredient.image} alt="Ingredient 2" />
-                </div>
-                <div className={style.image__wrapper}>
-                  <img src={ingredient.image} alt="Ingredient 3" />
-                </div>
-                <div className={style.image__wrapper}>
-                  <img src={ingredient.image} alt="Ingredient 4" />
-                </div>
-                <div className={style.image__wrapper}>
-                  <img src={ingredient.image} alt="Ingredient 4" />
-                </div>
-              </div>
-            </div>
-            <div className={style.order__price}>
-              <p>10</p>
-              <CurrencyIcon type="primary" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
+      ))}
+    </div>
   );
 };

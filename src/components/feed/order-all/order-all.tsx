@@ -1,28 +1,43 @@
 import React from 'react';
 import style from './order-all.module.css';
+import { useSelector } from '../../../services/store';
+import { getOrders, getStatus } from '../../../services/slices/order-feed/slice';
+
 export const AllOrder: React.FC = () => {
+  const orders = useSelector(getOrders);
+  const status = useSelector(getStatus);
+  const { total, totalToday } = useSelector((state) => state.OrderFeed);
+
+  // Разделение заказов на "Готовы" и "В работе"
+  const readyOrders = orders
+    .filter((order) => order.status === 'done')
+    .map((order) => order.number)
+    .slice(0, 10);
+  const inProgressOrders = orders
+    .filter((order) => order.status === 'pending')
+    .map((order) => order.number)
+    .slice(0, 10);
+
+  console.log(readyOrders);
+  console.log(orders);
+
   return (
     <div className={style.allOrder__container}>
       <div className={style.allOrder__box__status}>
         <div className={style.allOrder__box__ready}>
           <p className={style.title}>Готовы</p>
           <div className={`${style.allOrder__box__inReady__bar} ${style.column_2}`}>
-            <p>32123</p>
-            <p>32123</p>
-            <p>32123</p>
-            <p>32123</p>
-            <p>32123</p>
-            <p>32123</p>
-            <p>32123</p>
-            <p>32123</p>
-            <p>32123</p>
-            <p>32123</p>
+            {readyOrders.map((orderNumber) => (
+              <p key={orderNumber}>{orderNumber}</p>
+            ))}
           </div>
         </div>
         <div className={style.allOrder__box__inProgress}>
           <p className={style.title}>В работе</p>
           <div className={`${style.allOrder__box__inProgress__bar} ${style.column_1}`}>
-            <p>32123</p>
+            {inProgressOrders.map((orderNumber) => (
+              <p key={orderNumber}>{orderNumber}</p>
+            ))}
           </div>
         </div>
       </div>
@@ -31,15 +46,15 @@ export const AllOrder: React.FC = () => {
           <p>Выполнено за все время:</p>
         </div>
         <div className={style.allOrder__box__allTime__count__time}>
-          <p>28 752</p>
+          <p>{total}</p>
         </div>
       </div>
       <div className={style.allOrder__box__toDay__count}>
         <div className={style.allOrder__box__toDay__count__title}>
-          <p>Выполнено за сегодня:</p>
+          <p>Выполнено за сегодня: {totalToday}</p>
         </div>
         <div className={style.allOrder__box__toDay__count__time}>
-          <p className="text text_type_digits-large">138</p>
+          <p className="text text_type_digits-large">{totalToday}</p>
         </div>
       </div>
     </div>

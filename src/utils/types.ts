@@ -24,3 +24,21 @@ export interface UserState {
 export interface OrderState {
   status: string;
 }
+
+export interface Order {
+  ingredients: Ingredient[];
+  _id: string;
+  status: string;
+  number: number;
+  createdAt: string;
+  updatedAt: string;
+  name?: string;
+}
+
+export enum WebSocketStatus {
+  CONNECTED = 'connected',
+  ONLINE = 'online',
+  OFFLINE = 'offline',
+  DISCONNECTED = 'disconnected',
+  ERROR = 'error',
+}

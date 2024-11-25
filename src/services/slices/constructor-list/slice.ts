@@ -11,7 +11,7 @@ const initialState: constructorListState = {
   ingredientCounts: {},
 };
 
-const constructorListSlice = createSlice({
+export const constructorListSlice = createSlice({
   name: 'constructorList',
   initialState,
   reducers: {
@@ -45,4 +45,3 @@ const constructorListSlice = createSlice({
 
 export const { addIngredient, removeIngredient, clearIngredients, updateIngredientsOrder } =
   constructorListSlice.actions;
-export default constructorListSlice.reducer;

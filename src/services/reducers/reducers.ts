@@ -1,18 +1,14 @@
-import { combineReducers } from 'redux';
-import allIngredientsReducer from '../slices/all-ingredients/slice';
-import сonstructorListReducer from '../slices/constructor-list/slice';
-import currentIngredientReducer from '../slices/current-ingredient/slice';
-import orderReducer from '../slices/order-details/slice';
-import userReducer from '../slices/user/user';
+// import { combineReducers } from 'redux';
 
-const rootReducer = combineReducers({
-  user: userReducer,
-  ingredientsAll: allIngredientsReducer,
-  constructorList: сonstructorListReducer,
-  currentIngredient: currentIngredientReducer,
-  order: orderReducer,
-});
-// Типизация для RootState
-export type RootState = ReturnType<typeof rootReducer>;
+// const rootReducer = combineReducers({
+//   user: userReducer,
+//   ingredientsAll: allIngredientsReducer,
+//   constructorList: сonstructorListReducer,
+//   currentIngredient: currentIngredientReducer,
+//   order: orderReducer,
 
-export default rootReducer;
+// });
+
+// // Типизация для RootState
+
+// export default rootReducer;
