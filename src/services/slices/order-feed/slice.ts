@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { WebSocketStatus } from '../../../utils/types';
+import { Ingredient, WebSocketStatus } from '../../../utils/types';
 import { Order } from '../../../utils/types';
 
 type OrderFeedState = {

@@ -1,7 +1,6 @@
 import { Middleware } from 'redux';
 import { RootState } from '../store';
 import { ActionCreatorWithPayload, ActionCreatorWithoutPayload } from '@reduxjs/toolkit';
-import { connect } from 'react-redux';
 
 export type WSActions<R> = {
   connect: ActionCreatorWithPayload<string>;

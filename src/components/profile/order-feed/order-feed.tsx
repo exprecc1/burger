@@ -1,14 +1,20 @@
 import React from 'react';
 import style from './order-feed.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector } from '../../../services/store';
-import { getOrders } from '../../../services/slices/order-feed/slice';
+import { WS__USER_FEED_URL } from '../../../utils/request';
+import { useDispatch, useSelector } from '../../../services/store';
+import { wsUserConnect } from '../../../services/slices/user/user-order-feed/action';
+import { getUserOrders } from '../../../services/slices/user/user-order-feed/slice';
 import { Ingredient } from '../../../utils/types';
 
-export const FeedOrder: React.FC = () => {
-  const orders = useSelector(getOrders);
+export const ProfileOrderFeed: React.FC = () => {
+  const orders = useSelector(getUserOrders);
   const { total, totalToday } = useSelector((state) => state.OrderFeed);
   const { items } = useSelector((state) => state.ingredientsAll);
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    dispatch(wsUserConnect(WS__USER_FEED_URL));
+  }, []);
 
   // Создание ingredientsMap с использованием forEach
   const ingredientsMap: { [key: string]: Ingredient } = {};
@@ -16,8 +22,8 @@ export const FeedOrder: React.FC = () => {
     ingredientsMap[elem._id] = elem;
   });
 
-  // Выбор первых 10 заказов
-  const firstTenOrders = orders.slice(0, 10);
+  // Выбор последних 10 заказов
+  const firstTenOrders = orders.slice(-10).reverse();
 
   return (
     <div className={style.feed__container}>

@@ -5,7 +5,9 @@ interface UserState {
   user: {
     email: string;
     name: string;
+    password?: string;
   } | null;
+
   isAuthChecked: boolean;
 }
 

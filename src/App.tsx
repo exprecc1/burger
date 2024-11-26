@@ -10,6 +10,9 @@ import { RegisterPage } from './components/register/register';
 import { ForgotPasswordPage } from './components/forgot-password/forgot-password';
 import { ResetPasswordPage } from './components/reset-password/reset-password';
 import { ProfilePage } from './components/profile/profile';
+import { ProfileSetting } from './components/profile/profile-setting/profile-setting';
+import { ProfileOrderFeed } from './components/profile/order-feed/order-feed';
+
 import { IngredientDetailsPage } from './components/burger-ingredients/burger-ingredients-page/burger-ingredients-page';
 import { OnlyAuth, OnlyUnAuth } from './components/protected-route';
 
@@ -66,7 +69,10 @@ function App(): JSX.Element {
       <Routes location={backgroundLocation || location}>
         <Route path="/" element={<HomePage />} />
         <Route path="/feed" element={<FeedPage />} />
-        <Route path="/profile" element={<OnlyAuth component={<ProfilePage />} />} />
+        <Route path="/profile" element={<OnlyAuth component={<ProfilePage />} />}>
+          <Route index element={<OnlyAuth component={<ProfileSetting />} />} />
+          <Route path="orders" element={<OnlyAuth component={<ProfileOrderFeed />} />} />
+        </Route>
         <Route path="/register" element={<OnlyUnAuth component={<RegisterPage />} />} />
         <Route path="/login" element={<OnlyUnAuth component={<LoginPage />} />} />
         <Route
