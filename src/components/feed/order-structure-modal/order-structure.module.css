@@ -1,0 +1,140 @@
+.modal__content__order_structure {
+  max-width: 720px;
+  width: 100%;
+  margin: 0 auto;
+  opacity: 1;
+}
+.title__order_structure {
+  margin-top: 40px;
+  text-align: left;
+}
+
+.order__number {
+  margin-left: 40px;
+  font-size: 28px;
+  line-height: 24px;
+  font-weight: 400;
+  font-family: 'Iceland';
+  color: rgba(242, 242, 243, 1);
+}
+
+.order__name {
+  margin-left: 40px;
+  font-size: 24px;
+  line-height: 30px;
+  font-weight: 700;
+  font-family: 'Jet Brains Mono';
+  color: rgba(242, 242, 243, 1);
+}
+
+.order__status {
+  margin-left: 40px;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  font-family: 'Jet Brains Mono';
+}
+
+.order__status_done {
+  color: rgba(0, 204, 204, 1);
+}
+
+.order__status_pending {
+  color: rgba(248, 148, 6, 1);
+}
+
+.order__details {
+  margin: 60px 40px 40px 40px;
+}
+
+.order__structure__title {
+  font-size: 24px;
+  line-height: 30px;
+  font-weight: 700;
+  font-family: 'Jet Brains Mono';
+  text-align: left;
+  color: rgba(242, 242, 243, 1);
+}
+
+.ingredients__list {
+  max-height: 366px;
+  max-width: 640x;
+  overflow-y: auto;
+}
+
+.ingredient__item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.ingredient {
+  font-family: 'Jet Brains Mono';
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.price {
+  font-family: 'Iceland';
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.ingredient__image_wrapper {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  margin-right: 16px;
+  background: rgba(19, 19, 22, 1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ingredient__image_wrapper img {
+  width: 60px;
+  height: 60px;
+  border: 2px solid rgba(128, 26, 178, 1);
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.ingredient__price {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+.ingredient__price p {
+  margin-right: 8px;
+}
+
+.order__info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.date span {
+  font-size: 16px;
+  font-weight: 400;
+  font-family: 'Jet Brains Mono';
+  line-height: 24px;
+  color: rgba(133, 133, 173, 1);
+}
+
+.order__total {
+  display: flex;
+  align-items: center;
+}
+
+.order__total p {
+  margin-right: 8px;
+  font-family: 'Iceland';
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 24px;
+}

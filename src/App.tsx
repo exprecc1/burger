@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Routes, useLocation, Location, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { RootState, useDispatch, useSelector } from './services/store';
 import { AppHeader } from './components/app-header/app-header';
 import { HomePage } from './page/home';
 import { FeedPage } from './page/feed';
@@ -12,6 +12,7 @@ import { ResetPasswordPage } from './components/reset-password/reset-password';
 import { ProfilePage } from './components/profile/profile';
 import { ProfileSetting } from './components/profile/profile-setting/profile-setting';
 import { ProfileOrderFeed } from './components/profile/order-feed/order-feed';
+import { OrderStructurePage } from './components/feed/order-structure-page/order-structure-page';
 
 import { IngredientDetailsPage } from './components/burger-ingredients/burger-ingredients-page/burger-ingredients-page';
 import { OnlyAuth, OnlyUnAuth } from './components/protected-route';
@@ -22,44 +23,34 @@ import { fetchAllIngredients } from './services/slices/all-ingredients/slice';
 import { Ingredient } from './utils/types';
 
 import './App.css';
+import { OrderStructureModal } from './components/feed/order-structure-modal/order-structure';
 
 interface LocationState {
   backgroundLocation: string;
 }
-
-interface IngredientChanges extends Ingredient {
-  loading: boolean;
-  error: string;
-}
-
 function App(): JSX.Element {
   const dispatch = useDispatch();
   const location: Location<LocationState> = useLocation();
   const backgroundLocation: string = location.state?.backgroundLocation;
   const navigate = useNavigate();
 
-  const { loading, error } = useSelector(
-    (state: { ingredientsAll: IngredientChanges }) => state.ingredientsAll,
-  );
+  const { status, error } = useSelector((state: RootState) => state.ingredientsAll);
 
   // Получение данных с api
   React.useEffect(() => {
-    // @ts-ignore
     dispatch(fetchAllIngredients());
   }, [dispatch]);
 
   React.useEffect(() => {
-    // @ts-ignore
     dispatch(checkUserAuth());
-    // @ts-ignore
     dispatch(fetchUser());
   }, [dispatch]);
 
-  if (loading) {
+  if (status === 'loading') {
     return <div>Загрузка...</div>;
   }
 
-  if (error) {
+  if (status === 'failed') {
     return <div>Ошибка: {error}</div>;
   }
 
@@ -69,6 +60,7 @@ function App(): JSX.Element {
       <Routes location={backgroundLocation || location}>
         <Route path="/" element={<HomePage />} />
         <Route path="/feed" element={<FeedPage />} />
+        <Route path="/feed/:number" element={<OrderStructurePage />} />
         <Route path="/profile" element={<OnlyAuth component={<ProfilePage />} />}>
           <Route index element={<OnlyAuth component={<ProfileSetting />} />} />
           <Route path="orders" element={<OnlyAuth component={<ProfileOrderFeed />} />} />
@@ -92,6 +84,14 @@ function App(): JSX.Element {
             element={
               <Modal onClose={() => navigate(-1)}>
                 <IngredientDetailsPage />
+              </Modal>
+            }
+          />
+          <Route
+            path="/feed/:number"
+            element={
+              <Modal onClose={() => navigate(-1)}>
+                <OrderStructurePage />
               </Modal>
             }
           />

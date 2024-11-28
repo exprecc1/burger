@@ -49,8 +49,3 @@ export const Modal: FunctionComponent<ModalProps> = ({ onClose, children }) => {
     document.body,
   );
 };
-
-Modal.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  children: PropTypes.node,
-};

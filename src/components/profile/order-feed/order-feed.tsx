@@ -31,7 +31,7 @@ export const ProfileOrderFeed: React.FC = () => {
         <div key={order._id} className={style.feed__block}>
           <div className={style.order__data}>
             <div className={style.order__num}>
-              <p className="text text_type_digits-default">#{order.number}</p>
+              <p>#{order.number}</p>
             </div>
             <div className={style.order__date}>
               <FormattedDate date={new Date(order.createdAt)} />
@@ -40,6 +40,13 @@ export const ProfileOrderFeed: React.FC = () => {
           <div className={style.order__title}>
             <p>{order.name}</p>
           </div>
+          <p
+            className={`${style.order__status} ${
+              order.status === 'done' ? style.order__status_done : style.order__status_pending
+            }`}
+          >
+            {order.status === 'done' ? 'Создан' : 'Готовится'}
+          </p>
           <div className={style.order__box}>
             <div className={style.order__ingredient}>
               <div className={style.order__item}>

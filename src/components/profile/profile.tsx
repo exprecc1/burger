@@ -27,27 +27,32 @@ export const ProfilePage: FunctionComponent = () => {
 
   return (
     <div className={style.container__box}>
-      <nav className={style.nav__profile}>
-        <div className={style.nav__title}>
-          <NavLink to="/profile" className={isProfileActive ? style.active : style.nav__link}>
-            Профиль
-          </NavLink>
-        </div>
-        <div className={style.nav__title}>
-          <NavLink to="/profile/orders" className={isOrdersActive ? style.active : style.nav__link}>
-            История заказов
-          </NavLink>
-        </div>
-        <div className={style.nav__title}>
-          <NavLink to="#" className={style.nav__link} onClick={handleLogout}>
-            Выход
-          </NavLink>
-        </div>
-        <div className={style.nav__footer}>
-          <p>В этом разделе вы можете изменить свои персональные данные</p>
-        </div>
-      </nav>
-      <Outlet />
+      <div className={style.box}>
+        <nav className={style.nav__profile}>
+          <div className={style.nav__title}>
+            <NavLink to="/profile" className={isProfileActive ? style.active : style.nav__link}>
+              Профиль
+            </NavLink>
+          </div>
+          <div className={style.nav__title}>
+            <NavLink
+              to="/profile/orders"
+              className={isOrdersActive ? style.active : style.nav__link}
+            >
+              История заказов
+            </NavLink>
+          </div>
+          <div className={style.nav__title}>
+            <NavLink to="#" className={style.nav__link} onClick={handleLogout}>
+              Выход
+            </NavLink>
+          </div>
+          <div className={style.nav__footer}>
+            <p>В этом разделе вы можете изменить свои персональные данные</p>
+          </div>
+        </nav>
+        <Outlet />
+      </div>
     </div>
   );
 };

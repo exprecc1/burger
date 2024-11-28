@@ -14,10 +14,18 @@
   background-color: #1c1c21;
   position: relative;
   box-sizing: border-box;
+  text-align: left;
 }
 
 .feed__block:first-child {
   margin-top: 0;
+}
+
+.order__num p {
+  font-family: 'Iceland';
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 24px;
 }
 
 .order__data {
@@ -44,6 +52,21 @@
   line-height: 30px;
   color: rgba(242, 242, 243, 1);
   font-family: 'Jet Brains Mono';
+}
+
+.order__status {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  font-family: 'Jet Brains Mono';
+}
+
+.order__status_done {
+  color: rgba(0, 204, 204, 1);
+}
+
+.order__status_pending {
+  color: rgba(248, 148, 6, 1);
 }
 
 .order__box {

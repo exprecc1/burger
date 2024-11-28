@@ -1,11 +1,14 @@
 import React from 'react';
 import style from './order-feed.module.css';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector } from '../../../services/store';
 import { getOrders } from '../../../services/slices/order-feed/slice';
 import { Ingredient } from '../../../utils/types';
 
 export const FeedOrder: React.FC = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const orders = useSelector(getOrders);
   const { total, totalToday } = useSelector((state) => state.OrderFeed);
   const { items } = useSelector((state) => state.ingredientsAll);
@@ -19,10 +22,20 @@ export const FeedOrder: React.FC = () => {
   // Выбор первых 10 заказов
   const firstTenOrders = orders.slice(0, 10);
 
+  const handleClick = (number: number) => {
+    navigate(`/feed/${number}`, { state: { backgroundLocation: location } });
+  };
+
+  console.log(location);
+
   return (
     <div className={style.feed__container}>
       {firstTenOrders.map((order) => (
-        <div key={order._id} className={style.feed__block}>
+        <div
+          key={order._id}
+          className={style.feed__block}
+          onClick={() => handleClick(order.number)}
+        >
           <div className={style.order__data}>
             <div className={style.order__num}>
               <p className="text text_type_digits-default">#{order.number}</p>
