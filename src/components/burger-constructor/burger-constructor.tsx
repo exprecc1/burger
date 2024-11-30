@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useState } from 'react';
 import { useDrop } from 'react-dnd';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/store';
 import {
   ConstructorElement,
   Button,
@@ -8,7 +8,6 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { OrderDetails } from './burger-constructor-modal/burger-constructor-modal';
 import { Modal } from '../modal/modal';
-import { useModal } from '../../hooks/useModal';
 import {
   addIngredient,
   updateIngredientsOrder,

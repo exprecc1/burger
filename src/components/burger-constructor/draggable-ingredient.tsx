@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../services/store';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { removeIngredient } from '../../services/slices/constructor-list/slice';
 import { Ingredient } from '../../utils/types';

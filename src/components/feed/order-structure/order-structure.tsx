@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import style from './order-structure.module.css';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector } from '../../../services/store';
 import { getOrders } from '../../../services/slices/order-feed/slice';
 import { Ingredient } from '../../../utils/types';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { request } from '../../../utils/request';
 
-export const OrderStructureModal: React.FC = () => {
+export const OrderStructure: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const { number } = useParams<{ number: string }>();
   const orders = useSelector(getOrders);
   const { items } = useSelector((state) => state.ingredientsAll);
@@ -21,19 +23,27 @@ export const OrderStructureModal: React.FC = () => {
 
   useEffect(() => {
     // Поиск заказа по номеру
-    const foundOrder = orders.find((order) => order.number === parseInt(number, 10));
+    const foundOrder = orders.find((order) => order.number === parseInt(number!, 10));
     if (foundOrder) {
       setOrder(foundOrder);
     } else {
-      // Загрузка заказа с сервера, если он не найден в состоянии
+      // Загрузка заказа с сервера
       request(`/orders/${number}`)
-        .then((data) => setOrder(data.orders[0]))
-        .catch((error) => console.error(error));
+        .then((data) => {
+          if (data.orders.length > 0) {
+            setOrder(data.orders[0]);
+          } else {
+            console.log('Заказ не найден');
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
   }, [number, orders]);
 
   if (!order) {
-    return <div>Заказ не найден</div>;
+    return <div>Загрузка...</div>;
   }
 
   return (

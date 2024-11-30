@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { useDrag } from 'react-dnd';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../../../services/store';
 import { useLocation, useNavigate, Location } from 'react-router-dom';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Ingredient } from '../../../../utils/types';

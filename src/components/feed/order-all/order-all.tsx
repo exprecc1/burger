@@ -18,9 +18,6 @@ export const AllOrder: React.FC = () => {
     .map((order) => order.number)
     .slice(0, 10);
 
-  console.log(readyOrders);
-  console.log(orders);
-
   return (
     <div className={style.allOrder__container}>
       <div className={style.allOrder__box__status}>

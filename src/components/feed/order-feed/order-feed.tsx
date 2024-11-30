@@ -7,11 +7,11 @@ import { getOrders } from '../../../services/slices/order-feed/slice';
 import { Ingredient } from '../../../utils/types';
 
 export const FeedOrder: React.FC = () => {
-  const location = useLocation();
   const navigate = useNavigate();
+  const location = useLocation();
   const orders = useSelector(getOrders);
-  const { total, totalToday } = useSelector((state) => state.OrderFeed);
   const { items } = useSelector((state) => state.ingredientsAll);
+  const backgroundLocation: string = location.state?.backgroundLocation;
 
   // Создание ingredientsMap с использованием forEach
   const ingredientsMap: { [key: string]: Ingredient } = {};
@@ -25,8 +25,6 @@ export const FeedOrder: React.FC = () => {
   const handleClick = (number: number) => {
     navigate(`/feed/${number}`, { state: { backgroundLocation: location } });
   };
-
-  console.log(location);
 
   return (
     <div className={style.feed__container}>

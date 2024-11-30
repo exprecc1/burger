@@ -7,12 +7,14 @@ interface UserState {
     name: string;
     password?: string;
   } | null;
-
   isAuthChecked: boolean;
 }
 
 const initialState: UserState = {
-  user: null,
+  user: {
+    email: '',
+    name: '',
+  },
   isAuthChecked: false,
 };
 

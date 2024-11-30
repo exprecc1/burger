@@ -1,6 +1,7 @@
 import React from 'react';
 import style from './order-feed.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Location, useLocation, useNavigate } from 'react-router-dom';
 import { WS__USER_FEED_URL } from '../../../utils/request';
 import { useDispatch, useSelector } from '../../../services/store';
 import { wsUserConnect } from '../../../services/slices/user/user-order-feed/action';
@@ -8,6 +9,8 @@ import { getUserOrders } from '../../../services/slices/user/user-order-feed/sli
 import { Ingredient } from '../../../utils/types';
 
 export const ProfileOrderFeed: React.FC = () => {
+  const navigate = useNavigate();
+  const location: Location<string> = useLocation();
   const orders = useSelector(getUserOrders);
   const { total, totalToday } = useSelector((state) => state.OrderFeed);
   const { items } = useSelector((state) => state.ingredientsAll);
@@ -25,10 +28,18 @@ export const ProfileOrderFeed: React.FC = () => {
   // Выбор последних 10 заказов
   const firstTenOrders = orders.slice(-10).reverse();
 
+  const handleClick = (number: number) => {
+    navigate(`/profile/orders/${number}`, { state: { backgroundLocation: location } });
+  };
+
   return (
     <div className={style.feed__container}>
       {firstTenOrders.map((order) => (
-        <div key={order._id} className={style.feed__block}>
+        <div
+          key={order._id}
+          className={style.feed__block}
+          onClick={() => handleClick(order.number)}
+        >
           <div className={style.order__data}>
             <div className={style.order__num}>
               <p>#{order.number}</p>

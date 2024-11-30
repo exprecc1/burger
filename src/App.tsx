@@ -12,18 +12,12 @@ import { ResetPasswordPage } from './components/reset-password/reset-password';
 import { ProfilePage } from './components/profile/profile';
 import { ProfileSetting } from './components/profile/profile-setting/profile-setting';
 import { ProfileOrderFeed } from './components/profile/order-feed/order-feed';
-import { OrderStructurePage } from './components/feed/order-structure-page/order-structure-page';
-
+import { OrderStructure } from './components/feed/order-structure/order-structure';
 import { IngredientDetailsPage } from './components/burger-ingredients/burger-ingredients-page/burger-ingredients-page';
 import { OnlyAuth, OnlyUnAuth } from './components/protected-route';
-
 import { checkUserAuth, fetchUser } from './services/slices/user/action';
 import { fetchAllIngredients } from './services/slices/all-ingredients/slice';
-
-import { Ingredient } from './utils/types';
-
 import './App.css';
-import { OrderStructureModal } from './components/feed/order-structure-modal/order-structure';
 
 interface LocationState {
   backgroundLocation: string;
@@ -31,7 +25,7 @@ interface LocationState {
 function App(): JSX.Element {
   const dispatch = useDispatch();
   const location: Location<LocationState> = useLocation();
-  const backgroundLocation: string = location.state?.backgroundLocation;
+  const backgroundLocation = location.state?.backgroundLocation;
   const navigate = useNavigate();
 
   const { status, error } = useSelector((state: RootState) => state.ingredientsAll);
@@ -54,17 +48,20 @@ function App(): JSX.Element {
     return <div>Ошибка: {error}</div>;
   }
 
+  console.log(backgroundLocation);
+
   return (
     <>
       <AppHeader />
       <Routes location={backgroundLocation || location}>
         <Route path="/" element={<HomePage />} />
         <Route path="/feed" element={<FeedPage />} />
-        <Route path="/feed/:number" element={<OrderStructurePage />} />
         <Route path="/profile" element={<OnlyAuth component={<ProfilePage />} />}>
           <Route index element={<OnlyAuth component={<ProfileSetting />} />} />
           <Route path="orders" element={<OnlyAuth component={<ProfileOrderFeed />} />} />
         </Route>
+        <Route path="/feed/:number" element={<OrderStructure />} />
+        <Route path="/profile/orders/:id" element={<OrderStructure />} />
         <Route path="/register" element={<OnlyUnAuth component={<RegisterPage />} />} />
         <Route path="/login" element={<OnlyUnAuth component={<LoginPage />} />} />
         <Route
@@ -76,6 +73,8 @@ function App(): JSX.Element {
           element={<OnlyUnAuth component={<ResetPasswordPage />} />}
         />
         <Route path="/ingredient/:id" element={<IngredientDetailsPage />} />
+        <Route path="/feed/:number" element={<OrderStructure />} />
+        <Route path="/profile/orders/:id" element={<OrderStructure />} />
       </Routes>
       {backgroundLocation && (
         <Routes>
@@ -91,7 +90,15 @@ function App(): JSX.Element {
             path="/feed/:number"
             element={
               <Modal onClose={() => navigate(-1)}>
-                <OrderStructurePage />
+                <OrderStructure />
+              </Modal>
+            }
+          />
+          <Route
+            path="/profile/orders/:number"
+            element={
+              <Modal onClose={() => navigate(-1)}>
+                <OrderStructure />
               </Modal>
             }
           />

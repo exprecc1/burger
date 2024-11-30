@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { RootState, useSelector } from '../../services/store';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { BurgerIngredientsList } from './burger-ingredients-list/burger-ingredients-list';
 import { IngredientDetails } from './burger-ingredients-modal/ingredients-detail';
@@ -19,9 +19,7 @@ interface BurgerIngredientsState {
 export const BurgerIngredients: FunctionComponent = () => {
   const [current, setCurrent] = useState<TabType>('one');
   const { currentIngredient, closeModal, openModal } = useModal();
-  const { items, loading, error } = useSelector(
-    (state: { ingredientsAll: BurgerIngredientsState }) => state.ingredientsAll,
-  );
+  const { items, status, error } = useSelector((state: RootState) => state.ingredientsAll);
 
   // Фильтрация по категориям
   const [bun, sauce, stuff] = React.useMemo(() => {
@@ -91,7 +89,7 @@ export const BurgerIngredients: FunctionComponent = () => {
     <>
       {error ? (
         <div className={style.message__error}>{error}</div>
-      ) : loading ? (
+      ) : status === 'loading' ? (
         <div className={style.loading}>Загрузка...</div>
       ) : (
         items && (
