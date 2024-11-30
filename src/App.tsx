@@ -74,7 +74,7 @@ function App(): JSX.Element {
         />
         <Route path="/ingredient/:id" element={<IngredientDetailsPage />} />
         <Route path="/feed/:number" element={<OrderStructure />} />
-        <Route path="/profile/orders/:id" element={<OrderStructure />} />
+        <Route path="profile/orders/:id" element={<OnlyAuth component={<OrderStructure />} />} />
       </Routes>
       {backgroundLocation && (
         <Routes>
