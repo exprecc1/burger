@@ -46,6 +46,22 @@ export const OrderStructure: React.FC = () => {
     return <div>Загрузка...</div>;
   }
 
+  // посчет кол-ва ингредиентов в заказе
+  const countIngredients = (ingredients: string[]) => {
+    const countMap: { [key: string]: number } = {};
+    ingredients.forEach((ingredientId) => {
+      if (countMap[ingredientId]) {
+        countMap[ingredientId]++;
+      } else {
+        countMap[ingredientId] = 1;
+      }
+    });
+    return countMap;
+  };
+
+  const ingredientCountMap = countIngredients(order.ingredients);
+  const uniqueIngredients = Object.keys(ingredientCountMap);
+
   return (
     <div className={style.modal__content__order_structure}>
       <div className={style.title__order_structure}>
@@ -62,8 +78,8 @@ export const OrderStructure: React.FC = () => {
       <div className={style.order__details}>
         <p className={style.order__structure__title}>Состав:</p>
         <div className={style.ingredients__list}>
-          {order.ingredients.map((ingredientId: string, index: number) => {
-            const ingredient = ingredientsMap[String(ingredientId)];
+          {uniqueIngredients.map((ingredientId: string, index: number) => {
+            const ingredient = ingredientsMap[ingredientId];
             if (!ingredient) return null;
             return (
               <div key={index} className={style.ingredient__item}>
@@ -72,7 +88,9 @@ export const OrderStructure: React.FC = () => {
                 </div>
                 <p className={style.ingredient}>{ingredient.name}</p>
                 <div className={style.ingredient__price}>
-                  <p className={style.price}>{ingredient.price}</p>
+                  <p className={style.price}>
+                    {ingredientCountMap[ingredientId]} x {ingredient.price}
+                  </p>
                   <CurrencyIcon type="primary" />
                 </div>
               </div>
@@ -85,9 +103,9 @@ export const OrderStructure: React.FC = () => {
           </p>
           <div className={style.order__total}>
             <p className="text text_type_digits-default">
-              {order.ingredients.reduce((total: number, ingredientId: string) => {
-                const ingredient = ingredientsMap[String(ingredientId)];
-                return total + (ingredient?.price || 0);
+              {uniqueIngredients.reduce((total: number, ingredientId: string) => {
+                const ingredient = ingredientsMap[ingredientId];
+                return total + (ingredient?.price || 0) * ingredientCountMap[ingredientId];
               }, 0)}
             </p>
             <CurrencyIcon type="primary" />

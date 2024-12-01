@@ -16,10 +16,6 @@ export const AppHeader: FunctionComponent = () => {
   const dispatch = useDispatch();
   const user = useSelector(getUser);
   const isAuthChecked = useSelector(getIsAuthChecked);
-  const disconnect = () => {
-    dispatch(wsDisconnect());
-    dispatch(wsDisconnecting());
-  };
 
   return (
     <header className={style.header}>
@@ -27,7 +23,7 @@ export const AppHeader: FunctionComponent = () => {
         <section className={style.head}>
           <div className={style.toggle}>
             <div className={style.builder}>
-              <Link to="/" onClick={disconnect}>
+              <Link to="/">
                 <BurgerIcon type="primary" />
                 <span>Конструктор</span>
               </Link>
@@ -44,7 +40,7 @@ export const AppHeader: FunctionComponent = () => {
           </div>
           <div className={style.user}>
             <Link to="/profile">
-              <ProfileIcon type="secondary" onClick={disconnect} />
+              <ProfileIcon type="secondary" />
               {isAuthChecked && user ? <span>{user.email}</span> : <span>Личный кабинет</span>}
             </Link>
           </div>

@@ -4,8 +4,7 @@ import style from './burger-constructor-modal.module.css';
 import done from '../../../image/done.png';
 
 export const OrderDetails: FunctionComponent = () => {
-  const { orderNumber, status, error } = useSelector((state: RootState) => state.order);
-  console.log(orderNumber, status, error);
+  const { orderNumber, status, error } = useSelector((state) => state.order);
 
   if (status === 'loading') {
     return <div className={style.loading}>Загрузка....</div>;

@@ -27,7 +27,7 @@ export const constructorListSlice = createSlice({
         state.ingredients.push({ ...action.payload, uuid });
       }
     },
-    removeIngredient: (state, action: PayloadAction<Ingredient>) => {
+    removeIngredient: (state, action: PayloadAction<{ uuid: string }>) => {
       const { uuid } = action.payload;
       const index = state.ingredients.findIndex((ingredient) => ingredient.uuid === uuid);
       if (index !== -1) {

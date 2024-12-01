@@ -11,10 +11,7 @@ interface UserState {
 }
 
 const initialState: UserState = {
-  user: {
-    email: '',
-    name: '',
-  },
+  user: null,
   isAuthChecked: false,
 };
 

@@ -4,7 +4,10 @@ import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burge
 import { Location, useLocation, useNavigate } from 'react-router-dom';
 import { WS__USER_FEED_URL } from '../../../utils/request';
 import { useDispatch, useSelector } from '../../../services/store';
-import { wsUserConnect } from '../../../services/slices/user/user-order-feed/action';
+import {
+  wsUserConnect,
+  wsUserDisconnect,
+} from '../../../services/slices/user/user-order-feed/action';
 import { getUserOrders } from '../../../services/slices/user/user-order-feed/slice';
 import { Ingredient } from '../../../utils/types';
 
@@ -15,11 +18,15 @@ export const ProfileOrderFeed: React.FC = () => {
   const { total, totalToday } = useSelector((state) => state.OrderFeed);
   const { items } = useSelector((state) => state.ingredientsAll);
   const dispatch = useDispatch();
+
+  // Покдлючаем и отключаем
   React.useEffect(() => {
     dispatch(wsUserConnect(WS__USER_FEED_URL));
-  }, []);
+    return () => {
+      dispatch(wsUserDisconnect());
+    };
+  }, [dispatch]);
 
-  // Создание ingredientsMap с использованием forEach
   const ingredientsMap: { [key: string]: Ingredient } = {};
   items.forEach((elem) => {
     ingredientsMap[elem._id] = elem;

@@ -10,12 +10,6 @@ interface BurgerIngredientsItemProps {
   item: Ingredient;
 }
 
-interface IConstructorList {
-  constructorList: {
-    ingredients: Ingredient[];
-  };
-}
-
 export const BurgerIngredientsItem: FunctionComponent<BurgerIngredientsItemProps> = ({ item }) => {
   const dragType = item.type === 'bun' ? 'bun' : 'ingredient';
   const navigate = useNavigate();
@@ -29,7 +23,7 @@ export const BurgerIngredientsItem: FunctionComponent<BurgerIngredientsItemProps
     }),
   });
 
-  const ingredients = useSelector((state: IConstructorList) => state.constructorList.ingredients);
+  const ingredients = useSelector((state) => state.constructorList.ingredients);
 
   const count = React.useMemo(() => {
     if (item.type === 'bun') {

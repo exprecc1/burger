@@ -5,7 +5,6 @@ import { getOrders, getStatus } from '../../../services/slices/order-feed/slice'
 
 export const AllOrder: React.FC = () => {
   const orders = useSelector(getOrders);
-  const status = useSelector(getStatus);
   const { total, totalToday } = useSelector((state) => state.OrderFeed);
 
   // Разделение заказов на "Готовы" и "В работе"

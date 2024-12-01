@@ -13,15 +13,8 @@ interface ILocationState {
   from?: string;
 }
 
-interface IUserData {
-  id?: string;
-  name: string;
-  email: string;
-}
-type UserStateUser = IUserData | null;
-
 const Protected: FunctionComponent<ProtectedProps> = ({ onlyUnAuth = false, component }) => {
-  const user: UserStateUser = useSelector(getUser);
+  const user = useSelector(getUser);
   const isAuthChecked: boolean = useSelector(getIsAuthChecked);
   const location: Location<ILocationState> = useLocation();
 

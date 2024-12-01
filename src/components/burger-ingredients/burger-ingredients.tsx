@@ -19,7 +19,7 @@ interface BurgerIngredientsState {
 export const BurgerIngredients: FunctionComponent = () => {
   const [current, setCurrent] = useState<TabType>('one');
   const { currentIngredient, closeModal, openModal } = useModal();
-  const { items, status, error } = useSelector((state: RootState) => state.ingredientsAll);
+  const { items, status, error } = useSelector((state) => state.ingredientsAll);
 
   // Фильтрация по категориям
   const [bun, sauce, stuff] = React.useMemo(() => {

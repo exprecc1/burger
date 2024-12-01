@@ -11,7 +11,6 @@ export const FeedOrder: React.FC = () => {
   const location = useLocation();
   const orders = useSelector(getOrders);
   const { items } = useSelector((state) => state.ingredientsAll);
-  const backgroundLocation: string = location.state?.backgroundLocation;
 
   // Создание ingredientsMap с использованием forEach
   const ingredientsMap: { [key: string]: Ingredient } = {};

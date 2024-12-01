@@ -19,6 +19,7 @@
 .modal__content {
   display: flex;
   flex-direction: column;
+  text-align: center;
   align-items: center;
   justify-content: center;
   width: 100%;

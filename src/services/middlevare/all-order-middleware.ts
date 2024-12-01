@@ -2,55 +2,61 @@ import { Middleware } from 'redux';
 import { RootState } from '../store';
 import { ActionCreatorWithPayload, ActionCreatorWithoutPayload } from '@reduxjs/toolkit';
 
-export type WSActions<R> = {
+export type WSConfig<R> = {
   connect: ActionCreatorWithPayload<string>;
   disconnect?: ActionCreatorWithoutPayload;
-  wsConnecting: ActionCreatorWithoutPayload;
-  wsOnline?: ActionCreatorWithoutPayload;
-  wsError: ActionCreatorWithPayload<string>;
-  wsMessage: ActionCreatorWithPayload<R>;
+  connecting: ActionCreatorWithoutPayload;
+  online?: ActionCreatorWithoutPayload;
+  error: ActionCreatorWithPayload<string>;
+  message: ActionCreatorWithPayload<R>;
+  token?: string | null;
 };
 
 export const socketMiddleware = <R>(
-  wsActions: WSActions<R>,
+  config: WSConfig<R>,
 ): Middleware<NonNullable<unknown>, RootState> => {
   return (store) => {
     let socket: WebSocket | null = null;
-    const { connect, wsConnecting, disconnect, wsOnline, wsError, wsMessage } = wsActions;
+    const { connect, disconnect, connecting, online, error, message, token } = config;
     return (next) => (action) => {
       const { dispatch } = store;
       if (connect.match(action)) {
-        socket = new WebSocket(action.payload);
-        wsConnecting && dispatch(wsConnecting());
+        let url = action.payload;
+        if (token) {
+          url += `?token=${token}`;
+        }
+        socket = new WebSocket(url);
+        connecting && dispatch(connecting());
 
         socket.onopen = () => {
-          wsOnline && dispatch(wsOnline());
+          online && dispatch(online());
         };
 
         socket.onerror = () => {
-          dispatch(wsError('Error'));
+          error && dispatch(error('Erro'));
         };
+
         socket.onmessage = (event) => {
           const { data } = event;
-
           try {
             const parsedData = JSON.parse(data);
-            dispatch(wsMessage(parsedData));
+            dispatch(message(parsedData));
           } catch (err) {
-            dispatch(wsError((err as Error).message));
+            error && dispatch(error((err as Error).message));
           }
         };
 
         socket.onclose = () => {
           disconnect && dispatch(disconnect());
+          socket = null;
         };
       }
 
-      if (socket && wsMessage?.match(action)) {
+      if (socket && message.match(action)) {
         try {
           socket.send(JSON.stringify(action.payload));
         } catch (err) {
-          dispatch(wsError((err as Error).message));
+          error && dispatch(error((err as Error).message));
         }
       }
 
@@ -58,6 +64,7 @@ export const socketMiddleware = <R>(
         socket.close();
         socket = null;
       }
+
       next(action);
     };
   };

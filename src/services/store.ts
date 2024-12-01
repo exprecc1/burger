@@ -7,7 +7,7 @@ import { userSlice } from './slices/user/user';
 import { UserOrderFeedSlice } from './slices/user/user-order-feed/slice';
 import { OrderFeedSlice } from './slices/order-feed/slice';
 import { socketMiddleware } from './middlevare/all-order-middleware';
-import { socketUserMiddleware } from './middlevare/user-order-middleware';
+// import { socketUserMiddleware } from './middlevare/user-order-middleware';
 import { wsConnect, wsDisconnect } from './slices/order-feed/action';
 import { wsUserConnect, wsUserDisconnect } from './slices/user/user-order-feed/action';
 import { wsConnecting, wsOnline, wsError, wsMessage } from './slices/order-feed/slice';
@@ -23,20 +23,21 @@ import { useDispatch as dispatchHook, useSelector as selectorHook } from 'react-
 const liveAllFeedOrderMiddleware = socketMiddleware({
   connect: wsConnect,
   disconnect: wsDisconnect,
-  wsConnecting: wsConnecting,
-  wsOnline: wsOnline,
-  wsError: wsError,
-  wsMessage: wsMessage,
+  connecting: wsConnecting,
+  online: wsOnline,
+  error: wsError,
+  message: wsMessage,
 });
 
 //Для пользователя
-const liveUserOrderMiddleware = socketUserMiddleware({
-  userConnect: wsUserConnect,
-  userDisconnect: wsUserDisconnect,
-  wsUserConnecting: wsUserConnecting,
-  wsUserOnline: wsUserOnline,
-  wsUserError: wsUserError,
-  wsUserMessage: wsUserMessage,
+const liveUserOrderMiddleware = socketMiddleware({
+  connect: wsUserConnect,
+  disconnect: wsUserDisconnect,
+  connecting: wsUserConnecting,
+  online: wsUserOnline,
+  error: wsUserError,
+  message: wsUserMessage,
+  token: localStorage.getItem('accessToken')?.replace(/^Bearer\s+/i, '') || null,
 });
 
 const rootReducer = combineSlices(
