@@ -18,14 +18,18 @@ export const ProfileOrderFeed: React.FC = () => {
   const { total, totalToday } = useSelector((state) => state.OrderFeed);
   const { items } = useSelector((state) => state.ingredientsAll);
   const dispatch = useDispatch();
+  const token = localStorage.getItem('accessToken')?.replace(/^Bearer\s+/i, '') || null;
 
   // Покдлючаем и отключаем
   React.useEffect(() => {
-    dispatch(wsUserConnect(WS__USER_FEED_URL));
+    if (token) {
+      const urlWithToken = `${WS__USER_FEED_URL}?token=${token}`;
+      dispatch(wsUserConnect(urlWithToken));
+    }
     return () => {
       dispatch(wsUserDisconnect());
     };
-  }, [dispatch]);
+  }, [dispatch, token]);
 
   const ingredientsMap: { [key: string]: Ingredient } = {};
   items.forEach((elem) => {

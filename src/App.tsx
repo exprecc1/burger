@@ -28,7 +28,7 @@ function App(): JSX.Element {
   const backgroundLocation = location.state?.backgroundLocation;
   const navigate = useNavigate();
 
-  const { status, error } = useSelector((state: RootState) => state.ingredientsAll);
+  const { status, error } = useSelector((state) => state.ingredientsAll);
 
   // Получение данных с api
   React.useEffect(() => {
@@ -47,9 +47,6 @@ function App(): JSX.Element {
   if (status === 'failed') {
     return <div>Ошибка: {error}</div>;
   }
-
-  console.log(backgroundLocation);
-
   return (
     <>
       <AppHeader />

@@ -9,7 +9,6 @@ export type WSConfig<R> = {
   online?: ActionCreatorWithoutPayload;
   error: ActionCreatorWithPayload<string>;
   message: ActionCreatorWithPayload<R>;
-  token?: string | null;
 };
 
 export const socketMiddleware = <R>(
@@ -17,14 +16,11 @@ export const socketMiddleware = <R>(
 ): Middleware<NonNullable<unknown>, RootState> => {
   return (store) => {
     let socket: WebSocket | null = null;
-    const { connect, disconnect, connecting, online, error, message, token } = config;
+    const { connect, disconnect, connecting, online, error, message } = config;
     return (next) => (action) => {
       const { dispatch } = store;
       if (connect.match(action)) {
-        let url = action.payload;
-        if (token) {
-          url += `?token=${token}`;
-        }
+        const url = action.payload;
         socket = new WebSocket(url);
         connecting && dispatch(connecting());
 
@@ -33,7 +29,7 @@ export const socketMiddleware = <R>(
         };
 
         socket.onerror = () => {
-          error && dispatch(error('Erro'));
+          error && dispatch(error('Error'));
         };
 
         socket.onmessage = (event) => {
