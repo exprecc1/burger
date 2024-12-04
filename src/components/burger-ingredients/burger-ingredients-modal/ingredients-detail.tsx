@@ -1,30 +1,21 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { Ingredient } from '../../../utils/types';
+import { useSelector } from '../../../services/store';
 import style from '../burger-ingredients-modal/ingredients-detail.module.css';
 
-interface IngredientChanges extends Ingredient {
-  items: Ingredient[];
-  loading: boolean;
-  error: Error | null;
-}
-
 export const IngredientDetails = () => {
-  const { items, loading, error } = useSelector(
-    (state: { ingredientsAll: IngredientChanges }) => state.ingredientsAll,
-  );
+  const { items, status, error } = useSelector((state) => state.ingredientsAll);
   const { id } = useParams<{ id: string }>();
   const item = React.useMemo(() => {
     return items.find((ingredient) => ingredient._id === id);
   }, [items, id]);
 
-  if (loading) {
+  if (status === 'loading') {
     return <div>Загрузка...</div>;
   }
 
   if (error) {
-    return <div>Ошибка: {error.message}</div>;
+    return <div>Ошибка: {error}</div>;
   }
 
   if (!item) {

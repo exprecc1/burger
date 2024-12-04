@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../services/store';
 import { registerUser } from '../../services/slices/user/action';
 import style from './register.module.css';
 

@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { useDrag } from 'react-dnd';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../../../services/store';
 import { useLocation, useNavigate, Location } from 'react-router-dom';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Ingredient } from '../../../../utils/types';
@@ -8,12 +8,6 @@ import style from './burger-ingredient-item.module.css';
 
 interface BurgerIngredientsItemProps {
   item: Ingredient;
-}
-
-interface IConstructorList {
-  constructorList: {
-    ingredients: Ingredient[];
-  };
 }
 
 export const BurgerIngredientsItem: FunctionComponent<BurgerIngredientsItemProps> = ({ item }) => {
@@ -29,7 +23,7 @@ export const BurgerIngredientsItem: FunctionComponent<BurgerIngredientsItemProps
     }),
   });
 
-  const ingredients = useSelector((state: IConstructorList) => state.constructorList.ingredients);
+  const ingredients = useSelector((state) => state.constructorList.ingredients);
 
   const count = React.useMemo(() => {
     if (item.type === 'bun') {

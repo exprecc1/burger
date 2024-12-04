@@ -67,6 +67,11 @@
   justify-content: space-around;
 }
 
+.order__page {
+  display: flex;
+  justify-content: space-around;
+}
+
 .error-message {
   text-align: center;
 }

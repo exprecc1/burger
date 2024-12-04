@@ -1,7 +1,16 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { login, logout, registerUser, fetchUser, updateUser } from './action';
 
-const initialState = {
+interface UserState {
+  user: {
+    email: string;
+    name: string;
+    password?: string;
+  } | null;
+  isAuthChecked: boolean;
+}
+
+const initialState: UserState = {
   user: null,
   isAuthChecked: false,
 };
@@ -10,10 +19,10 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUser: (state, action) => {
+    setUser: (state, action: PayloadAction<UserState['user']>) => {
       state.user = action.payload;
     },
-    setIsAuthChecked: (state, action) => {
+    setIsAuthChecked: (state, action: PayloadAction<boolean>) => {
       state.isAuthChecked = action.payload;
     },
   },
@@ -41,7 +50,7 @@ export const userSlice = createSlice({
 
 export const { setUser, setIsAuthChecked } = userSlice.actions;
 
-export const getUser = (state) => state.user.user;
-export const getIsAuthChecked = (state) => state.user.isAuthChecked;
+export const getUser = (state: { user: UserState }) => state.user.user;
+export const getIsAuthChecked = (state: { user: UserState }) => state.user.isAuthChecked;
 
 export default userSlice.reducer;

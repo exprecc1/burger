@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import style from './login.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate, useLocation, Location } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../services/store';
 import { login } from '../../services/slices/user/action';
 
 interface ILocation {

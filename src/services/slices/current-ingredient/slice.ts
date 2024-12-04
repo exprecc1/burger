@@ -1,13 +1,20 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { request } from '../../../utils/request';
+import { Ingredient } from '../../../utils/types';
 
-const initialState = {
+interface IcurrentIngredientState {
+  currentIngredient: Ingredient | null;
+  loading: boolean;
+  error: string | null;
+}
+
+const initialState: IcurrentIngredientState = {
   currentIngredient: null,
   loading: false,
   error: null,
 };
 
-export const fetchIngredientById = createAsyncThunk(
+export const fetchIngredientById = createAsyncThunk<Ingredient, string>(
   'currentIngredient/fetchIngredientById',
   async (id) => {
     const data = await request(`/ingredients/` + id);
@@ -15,11 +22,11 @@ export const fetchIngredientById = createAsyncThunk(
   },
 );
 
-const currentIngredientSlice = createSlice({
+export const currentIngredientSlice = createSlice({
   name: 'currentIngredient',
   initialState,
   reducers: {
-    viewIngredient: (state, action) => {
+    viewIngredient: (state, action: PayloadAction<Ingredient>) => {
       state.currentIngredient = action.payload;
     },
     removeViewIngredient: (state) => {
@@ -32,13 +39,13 @@ const currentIngredientSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchIngredientById.fulfilled, (state, action) => {
+      .addCase(fetchIngredientById.fulfilled, (state, action: PayloadAction<Ingredient>) => {
         state.loading = false;
         state.currentIngredient = action.payload;
       })
       .addCase(fetchIngredientById.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.error = action.error.message ?? 'Ошибка';
       });
   },
 });

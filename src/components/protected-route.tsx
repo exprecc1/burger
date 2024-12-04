@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../services/store';
 import { getIsAuthChecked, getUser } from '../services/slices/user/user';
 import { Navigate, useLocation, Location } from 'react-router-dom';
 import { FunctionComponent } from 'react';
@@ -13,14 +13,8 @@ interface ILocationState {
   from?: string;
 }
 
-interface IUserData {
-  id: string;
-  name: string;
-  email: string;
-}
-
 const Protected: FunctionComponent<ProtectedProps> = ({ onlyUnAuth = false, component }) => {
-  const user: IUserData = useSelector(getUser);
+  const user = useSelector(getUser);
   const isAuthChecked: boolean = useSelector(getIsAuthChecked);
   const location: Location<ILocationState> = useLocation();
 

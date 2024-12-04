@@ -6,12 +6,14 @@ import {
   Logo,
   ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from '../../services/store';
 import { getUser, getIsAuthChecked } from '../../services/slices/user/user';
-
+import { wsDisconnect } from '../../services/slices/order-feed/action';
 import style from './app-header.module.css';
+import { wsDisconnecting } from '../../services/slices/order-feed/slice';
 
 export const AppHeader: FunctionComponent = () => {
+  const dispatch = useDispatch();
   const user = useSelector(getUser);
   const isAuthChecked = useSelector(getIsAuthChecked);
 
@@ -27,10 +29,10 @@ export const AppHeader: FunctionComponent = () => {
               </Link>
             </div>
             <div className={style.tape}>
-              <a href="#">
+              <Link to="/feed">
                 <ListIcon type="secondary" />
                 <span>Лента заказов</span>
-              </a>
+              </Link>
             </div>
           </div>
           <div className={style.header_logo}>

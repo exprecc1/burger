@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useState } from 'react';
 import { useDrop } from 'react-dnd';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/store';
 import {
   ConstructorElement,
   Button,
@@ -8,7 +8,6 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { OrderDetails } from './burger-constructor-modal/burger-constructor-modal';
 import { Modal } from '../modal/modal';
-import { useModal } from '../../hooks/useModal';
 import {
   addIngredient,
   updateIngredientsOrder,
@@ -35,11 +34,9 @@ export const BurgerConstructor: FunctionComponent = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location: Location<string> = useLocation();
-  const ingredients: Ingredient[] = useSelector(
-    (state: { constructorList: BurgerConstructorState }) => state.constructorList.ingredients,
-  );
-  const user = useSelector((state: { user: UserState }) => state.user.user);
-  const orderStatus = useSelector((state: { order: OrderState }) => state.order.status);
+  const ingredients = useSelector((state) => state.constructorList.ingredients);
+  const user = useSelector((state) => state.user.user);
+  const orderStatus = useSelector((state) => state.order.status);
 
   const bun = ingredients.filter((obj: Ingredient) => obj.type && obj.type.includes('bun'));
   const nonBunIngredients = ingredients.filter((obj: Ingredient) => obj.type && obj.type !== 'bun');

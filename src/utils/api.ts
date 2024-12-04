@@ -2,7 +2,8 @@ import { BASE_URL } from './request';
 import { checkResponse } from './checkResponse';
 
 // Типы данных
-interface IUserData {
+// Типы данных
+export interface IUserData {
   email: string;
   password: string;
   name?: string;
@@ -18,7 +19,7 @@ interface ITokenResponse {
   refreshToken: string;
 }
 
-interface IUserResponse {
+export interface IUserResponse {
   user: {
     email: string;
     name: string;
@@ -30,7 +31,7 @@ export interface IPasswordResetResponse {
 }
 
 // Регистрация
-const register = async (userData: IUserData): Promise<ITokenResponse> => {
+const register = async (userData: IUserData): Promise<IUserResponse> => {
   const response = await fetch(`${BASE_URL}/auth/register`, {
     method: 'POST',
     headers: {
@@ -43,11 +44,14 @@ const register = async (userData: IUserData): Promise<ITokenResponse> => {
   localStorage.setItem('accessToken', data.accessToken);
   localStorage.setItem('refreshToken', data.refreshToken);
   startTokenRefreshInterval(); //Запуск таймера
-  return data;
+
+  // Получаем данные пользователя после регистрации
+  const userResponse = await getUser();
+  return userResponse;
 };
 
 // Вход
-const login = async (credentials: ICredentials): Promise<ITokenResponse> => {
+const login = async (credentials: ICredentials): Promise<IUserResponse> => {
   const response = await fetch(`${BASE_URL}/auth/login`, {
     method: 'POST',
     headers: {
@@ -60,7 +64,10 @@ const login = async (credentials: ICredentials): Promise<ITokenResponse> => {
   localStorage.setItem('accessToken', data.accessToken);
   localStorage.setItem('refreshToken', data.refreshToken);
   startTokenRefreshInterval(); //Запуск таймера
-  return data;
+
+  // Получаем данные пользователя после входа
+  const userResponse = await getUser();
+  return userResponse;
 };
 
 // Выход
