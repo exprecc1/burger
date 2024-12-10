@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { RootState, useSelector } from '../../../services/store';
+import { useSelector } from '../../../services/store';
 import style from './burger-constructor-modal.module.css';
 import done from '../../../image/done.png';
 
@@ -16,7 +16,9 @@ export const OrderDetails: FunctionComponent = () => {
 
   return (
     <div className={style.modal__content__order}>
-      <span className={style.orderNum}>{orderNumber}</span>
+      <span className={style.orderNum} data-cy="modal-order">
+        {orderNumber}
+      </span>
       <div className={style.id__text}>
         <h3>идентификатор заказа</h3>
       </div>

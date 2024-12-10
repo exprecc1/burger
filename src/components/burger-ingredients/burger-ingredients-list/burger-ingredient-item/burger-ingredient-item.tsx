@@ -43,6 +43,7 @@ export const BurgerIngredientsItem: FunctionComponent<BurgerIngredientsItemProps
       className={style.ingredients}
       onClick={handleClick}
       style={{ opacity: isDragging ? 0.5 : 1 }}
+      data-cy="ingredient-item" // Добавлен data-cy атрибут
     >
       {count > 0 ? <Counter count={count} size="default" extraClass="m-1" /> : null}
       <img src={item.image} alt={item.name} />
