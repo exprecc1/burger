@@ -6,7 +6,7 @@ interface constructorListState {
   ingredientCounts: Record<string, number>;
 }
 
-const initialState: constructorListState = {
+export const initialState: constructorListState = {
   ingredients: [],
   ingredientCounts: {},
 };

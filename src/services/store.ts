@@ -36,10 +36,9 @@ const liveUserOrderMiddleware = socketMiddleware({
   online: wsUserOnline,
   error: wsUserError,
   message: wsUserMessage,
-  token: localStorage.getItem('accessToken')?.replace(/^Bearer\s+/i, '') || null,
 });
 
-const rootReducer = combineSlices(
+export const rootReducer = combineSlices(
   ingredientsAllSlice,
   constructorListSlice,
   currentIngredientSlice,

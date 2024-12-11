@@ -29,9 +29,11 @@ export const Modal: FunctionComponent<ModalProps> = ({ onClose, children }) => {
   return createPortal(
     <>
       <ModalOverlay onClose={onClose} />
-      <div id={style.modal} className={style.modal__content}>
+      <div id={style.modal} className={style.modal__content} data-cy="modal">
         <div className="modal__header">
-          <CloseIcon onClick={() => onClose()} type="primary" className={style.close} />
+          <div className={style.close} onClick={() => onClose()} data-cy="modal-close-button">
+            <CloseIcon type="primary" />
+          </div>
         </div>
         {children}
       </div>

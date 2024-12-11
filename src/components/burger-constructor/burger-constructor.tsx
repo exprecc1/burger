@@ -95,7 +95,6 @@ export const BurgerConstructor: FunctionComponent = () => {
 
   const handleOrderSubmit = () => {
     if (!user) {
-      // Перенаправляем на страницу авторизации
       navigate('/login', { state: { from: location } });
       return;
     }
@@ -104,10 +103,7 @@ export const BurgerConstructor: FunctionComponent = () => {
       return;
     }
 
-    console.log(user);
-
     const ingredientIds = ingredients.map((ingredient: Ingredient) => ingredient._id);
-    //@ts-ignore
     dispatch(submitOrder(ingredientIds));
     setIsOpen(true);
   };
@@ -129,11 +125,12 @@ export const BurgerConstructor: FunctionComponent = () => {
   }, [orderStatus, dispatch]);
 
   return (
-    <div className="builder">
+    <div className="builder" data-cy="constructor">
       <div className={style.builder__content}>
         <div
           className={isOverBunTop ? style.empty__top__drop : style.builder__box}
           ref={dropBunTop}
+          data-cy="constructor-drop-area-bun-up" // Добавлен data-cy атрибут
         >
           {bun.length > 0 ? (
             bun.map((item) => (
@@ -155,6 +152,7 @@ export const BurgerConstructor: FunctionComponent = () => {
         <div
           className={isOverIngredients ? style.empty__drop : style.builder__ingredients}
           ref={dropIngredients}
+          data-cy="constructor-drop-area-ingredients" // Добавлен data-cy атрибут
         >
           {nonBunIngredients.length > 0 ? (
             nonBunIngredients.map((item, index) => (
@@ -163,6 +161,7 @@ export const BurgerConstructor: FunctionComponent = () => {
                 item={item}
                 index={index}
                 moveIngredient={moveIngredient}
+                data-cy="draggable-ingredient"
               />
             ))
           ) : (
@@ -174,6 +173,7 @@ export const BurgerConstructor: FunctionComponent = () => {
         <div
           className={isOverBunBottom ? style.empty__bottom__drop : style.builder__box}
           ref={dropBunBottom}
+          data-cy="constructor-drop-area-bun-down" // Добавлен data-cy атрибут
         >
           {bun.length > 0 ? (
             bun.map((item) => (
@@ -200,7 +200,13 @@ export const BurgerConstructor: FunctionComponent = () => {
             <CurrencyIcon type="primary" />
           </p>
         </div>
-        <Button onClick={handleOrderSubmit} htmlType="button" type="primary" size="medium">
+        <Button
+          onClick={handleOrderSubmit}
+          htmlType="button"
+          type="primary"
+          size="medium"
+          data-cy="order-button" // Добавлен data-cy атрибут
+        >
           Оформить заказ
         </Button>
       </div>

@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Ingredient, WebSocketStatus } from '../../../utils/types';
 import { Order } from '../../../utils/types';
 
-type OrderFeedState = {
+export type OrderFeedState = {
   orders: Order[];
   total: number;
   totalToday: number;
@@ -10,7 +10,7 @@ type OrderFeedState = {
   error: string | null;
 };
 
-const initialState: OrderFeedState = {
+export const initialState: OrderFeedState = {
   orders: [],
   total: 0,
   totalToday: 0,
