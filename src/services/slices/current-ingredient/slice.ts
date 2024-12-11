@@ -8,7 +8,7 @@ interface IcurrentIngredientState {
   error: string | null;
 }
 
-const initialState: IcurrentIngredientState = {
+export const initialState: IcurrentIngredientState = {
   currentIngredient: null,
   loading: false,
   error: null,

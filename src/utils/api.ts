@@ -178,7 +178,7 @@ const resetPassword = async (password: string, token: string): Promise<IPassword
 };
 
 // Обновление токенов каждые 20 минут
-let tokenRefreshInterval: number;
+let tokenRefreshInterval: ReturnType<typeof setInterval>;
 
 const startTokenRefreshInterval = () => {
   tokenRefreshInterval = setInterval(async () => {

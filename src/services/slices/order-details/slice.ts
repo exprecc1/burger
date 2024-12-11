@@ -36,7 +36,7 @@ export const submitOrder = createAsyncThunk<IOrderResponse, IngredientIds>(
   },
 );
 
-const initialState: OrderState = {
+export const initialState: OrderState = {
   orderNumber: null,
   status: 'idle',
   error: null,
