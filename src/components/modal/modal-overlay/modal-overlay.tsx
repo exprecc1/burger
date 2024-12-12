@@ -6,5 +6,7 @@ interface ModalOverlayProps {
 }
 
 export const ModalOverlay: FunctionComponent<ModalOverlayProps> = ({ onClose }) => {
-  return <div className={style.modal__overlay__active} onClick={onClose}></div>;
+  return (
+    <div className={style.modal__overlay__active} onClick={onClose} data-cy="modal-overlay"></div>
+  );
 };

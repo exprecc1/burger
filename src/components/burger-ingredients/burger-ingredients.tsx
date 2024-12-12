@@ -10,12 +10,6 @@ import style from './burger-ingredients.module.css';
 
 type TabType = 'one' | 'two' | 'three';
 
-interface BurgerIngredientsState {
-  items: Ingredient[];
-  loading: boolean;
-  error: string | null;
-}
-
 export const BurgerIngredients: FunctionComponent = () => {
   const [current, setCurrent] = useState<TabType>('one');
   const { currentIngredient, closeModal, openModal } = useModal();

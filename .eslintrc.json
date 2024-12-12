@@ -17,9 +17,16 @@
   "env": {
     "browser": true,
     "es2021": true,
-    "node": true
+    "node": true,
+    "jest": true // Уже включено, но явно указано для ясности
   },
-  "plugins": ["@typescript-eslint", "import", "react", "react-hooks"],
+  "plugins": [
+    "@typescript-eslint",
+    "import",
+    "react",
+    "react-hooks",
+    "jest" // Плагин для Jest
+  ],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
@@ -27,7 +34,8 @@
     "plugin:import/warnings",
     "plugin:import/typescript",
     "plugin:react/recommended",
-    "plugin:react-hooks/recommended"
+    "plugin:react-hooks/recommended",
+    "plugin:jest/recommended" // Рекомендуемые правила для Jest
   ],
   "rules": {
     // Общие правила
@@ -74,6 +82,21 @@
         "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
         "alphabetize": { "order": "asc", "caseInsensitive": true }
       }
-    ]
-  }
+    ],
+
+    // Правила для Jest
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/prefer-to-have-length": "warn",
+    "jest/valid-expect": "error"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts", "**/*.spec.tsx"], // Указываем файлы с тестами
+      "env": {
+        "jest": true
+      }
+    }
+  ]
 }

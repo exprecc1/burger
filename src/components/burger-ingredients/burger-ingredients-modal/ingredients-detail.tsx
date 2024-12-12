@@ -23,7 +23,7 @@ export const IngredientDetails = () => {
   }
 
   return (
-    <div className={style.modal__content__ingredients}>
+    <div className={style.modal__content__ingredients} data-cy="modal-content">
       <div className={style.title__ingredients}>
         <h2>Детали ингредиента</h2>
       </div>

@@ -10,7 +10,7 @@ interface UserOrderFeedState {
   error: string | null;
 }
 
-const initialState: UserOrderFeedState = {
+export const initialState: UserOrderFeedState = {
   orders: [],
   total: 0,
   totalToday: 0,

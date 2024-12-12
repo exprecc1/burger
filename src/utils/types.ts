@@ -26,7 +26,7 @@ export interface OrderState {
 }
 
 export interface Order {
-  ingredients: Ingredient[];
+  ingredients: string[];
   _id: string;
   status: string;
   number: number;
